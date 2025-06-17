@@ -14,10 +14,9 @@ Para integrar o Jules-Flow, simplesmente copie o diretório `jules-flow/` comple
 
 Para iniciar o trabalho do agente Jules no projeto, você pode usar os seguintes prompts. Eles instruem o agente a se contextualizar, começar a trabalhar ou retomar o desenvolvimento do projeto de acordo com o fluxo estabelecido.
 
----
 
 **Prompt para o Primeiro Uso do Agente Jules:**
-
+```markdown
 Olá, Jules. Você está iniciando os trabalhos em um novo projeto. Sua primeira missão é preparar o ambiente `jules-flow` e planejar os passos iniciais. Siga estritamente esta sequência:
 
 1.  **Limpeza do Ambiente**: Verifique o diretório `jules-flow` em busca de resíduos de projetos anteriores.
@@ -36,11 +35,10 @@ Olá, Jules. Você está iniciando os trabalhos em um novo projeto. Sua primeira
 
 4.  **Início dos Trabalhos**:
     * Após concluir o planejamento, anuncie que o setup foi finalizado e informe qual será a primeira `TASK` que você irá executar.
-
----
+```
 
 **Prompt para a Retomada de Trabalho do Agente Jules:**
-
+```markdown
 Olá, Jules. É hora de retomar seu trabalho neste projeto. Para garantir a continuidade e consistência, siga rigorosamente os seguintes passos para se reorientar antes de agir:
 
 1.  **Recuperação de Contexto (Memória)**:
@@ -60,8 +58,7 @@ Olá, Jules. É hora de retomar seu trabalho neste projeto. Para garantir a cont
 
 4.  **Execute**:
     * Prossiga com a execução da ação que você planejou.
-
----
+```markdown
 
 ## Fluxo do Sistema
 
@@ -93,3 +90,7 @@ O fluxo de trabalho no Jules-Flow é centrado em arquivos de tarefa em Markdown 
     * `README.md`: Este arquivo.
     * `INSTRUCTIONS_FOR_JULES.md`: Instruções operacionais para o agente Jules.
     * `TASK_INDEX.md`: Índice e relatório de progresso de todas as tarefas.
+
+## Licença
+
+Este projeto está licenciado sob os termos da [NOME DA LICENÇA]. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
