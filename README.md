@@ -93,4 +93,4 @@ O fluxo de trabalho no Jules-Flow é centrado em arquivos de tarefa em Markdown 
 
 ## Licença
 
-Este projeto está licenciado sob os termos da [NOME DA LICENÇA]. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está licenciado sob os termos da Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
