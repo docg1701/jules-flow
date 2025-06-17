@@ -10,7 +10,7 @@ Jules-Flow é um sistema de gerenciamento de microtarefas projetado para ser ope
 
 Para integrar o Jules-Flow, simplesmente copie o diretório `jules-flow/` completo para a raiz do seu projeto. Após a cópia, adicione e comite os arquivos ao seu repositório Git. Isso estabelecerá o sistema de gerenciamento de tarefas como parte integrante do seu projeto.
 
-### 2. Prompt Inicial para o Agente (Gemini Pro)
+### 2. Prompt Inicial para o Agente
 
 Para iniciar o trabalho do agente Jules no projeto, você pode usar os seguintes prompts. Eles instruem o agente a se contextualizar, começar a trabalhar ou retomar o desenvolvimento do projeto de acordo com o fluxo estabelecido.
 
