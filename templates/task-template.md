@@ -2,8 +2,8 @@
 id: task-000
 title: "Título Curto e Descritivo da Tarefa"
 epic: "Fase X: Nome do Épico do Roadmap"
-type: "development" # Tipos: development, research, test, documentation, review, reporting
-status: backlog
+type: "development" # Tipos: development, research, test, documentation, review
+status: backlog # Status: backlog, in_progress, done, failed
 priority: medium
 dependencies: []
 assignee: Jules
@@ -26,4 +26,4 @@ assignee: Jules
 
 ### Relatório de Execução
 
-(Esta seção deve ser deixada em branco no template)
+(Esta seção deve ser deixada em branco no template. Em caso de falha, preencha com os logs de erro.)

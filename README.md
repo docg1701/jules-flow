@@ -97,11 +97,11 @@ O desenvolvedor humano, atuando como arquiteto, colabora com o Gemini para anali
 
 ### Fase 2: Execução (Agente Jules)
 
-Em um novo branch, o agente Jules é acionado. Ele lê o `working-plan.md`, prepara o ambiente de trabalho, decompõe o plano em `task`s atômicas no `backlog/`, e as executa em sequência. O progresso é rastreado através do `task-index.md`.
+Em um novo branch, o agente Jules é acionado. Ele lê o `working-plan.md`, prepara o ambiente de trabalho, decompõe o plano em `task`s atômicas e as executa de forma inteligente, respeitando dependências e gerenciando estados de progresso (`in_progress`) e falha (`failed`). O progresso é rastreado através do `task-index.md`.
 
 ### Fase 3: Finalização (Agente Jules)
 
-Após todas as `task`s serem concluídas, Jules é acionado uma última vez para consolidar os relatórios de execução de cada `task` em um único relatório final. Este relatório é arquivado em `jules-flow/final-reports/`, e todos os artefatos de trabalho temporários (`backlog/`, `done/`, etc.) são removidos, deixando o branch limpo e pronto para revisão.
+Após todas as `task`s serem concluídas com sucesso, Jules é acionado uma última vez para consolidar os relatórios de execução em um único relatório final. Este relatório é arquivado em `jules-flow/final-reports/`, e todos os artefatos de trabalho temporários são removidos, deixando o branch limpo e pronto para revisão.
 
 ## Guia de Prompts Essenciais
 
@@ -201,10 +201,11 @@ Olá, Jules. Todo o trabalho de desenvolvimento neste branch foi concluído. Sua
 
 2.  **Limpeza Final do Branch**:
     * Preserve o diretório `jules-flow/final-reports/`.
-    * Exclua todos os arquivos de `jules-flow/backlog/`, `jules-flow/done/`, e `jules-flow/docs/reference/`.
+    * Exclua o conteúdo dos diretórios `jules-flow/backlog/`, `jules-flow/done/` e `jules-flow/docs/reference/`.
     * Limpe os arquivos `jules-flow/task-index.md` e `jules-flow/working-plan.md`.
 
 3.  **Commit de Finalização**: Execute um commit com a mensagem "Finalize: Arquivamento do relatório final e limpeza do branch.".
+
 4.  **Anúncio de Conclusão**: Informe que o trabalho foi concluído e o branch está pronto para revisão.
 ```
 
@@ -234,11 +235,13 @@ Siga rigorosamente esta sequência:
     * **Anúncio**: Informe que a documentação foi atualizada com sucesso.
 ```
 
-## Estrutura de Pastas
+## Estrutura de Diretórios
 
 * `/jules-flow/`: Diretório raiz do sistema Jules-Flow.
     * `/backlog/`: Contém tarefas pendentes (arquivos `.md`).
-    * `/done/`: Contém tarefas concluídas (arquivos `.md`).
+    * `/in_progress/`: Contém a tarefa que está sendo executada no momento.
+    * `/done/`: Contém tarefas concluídas com sucesso.
+    * `/failed/`: Contém tarefas que falharam durante a execução.
     * `/final-reports/`: Contém os relatórios finais consolidados de cada branch de trabalho.
     * `/docs/`: Contém documentação gerada pelo Jules-Flow.
         * `/reference/`: Arquivos de referência criados durante a fase de pesquisa.
