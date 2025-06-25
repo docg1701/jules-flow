@@ -50,7 +50,7 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
     6.  Popule o `jules-flow/task-index.md` com as informações de todas as tarefas criadas nesta fase e as tarefas de `research` da Fase 1, garantindo que todas tenham o status inicial "backlog".
     7.  Ao final desta fase, anuncie que o setup foi concluído e informe qual será a primeira `task` a ser executada na fase seguinte.
 
-### Fase 3: Execução Inteligente e Dinâmica de Tarefas
+#### Fase 3: Execução Inteligente e Dinâmica de Tarefas
 * **Objetivo**: Executar as tarefas de forma ordenada e segura.
 * **Ação**: Siga o ciclo de execução para cada tarefa, uma de cada vez.
 * **Ciclo de Execução da Tarefa**:
