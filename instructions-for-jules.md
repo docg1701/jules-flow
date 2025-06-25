@@ -10,8 +10,7 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
 2.  **Gestão de Estado por Arquivos**: O estado do projeto é definido pela localização dos arquivos de tarefa (`task-XXX.md`) nos diretórios `/backlog/`, `/in_progress/`, `/done/` e `/failed/`.
 3.  **Índice Central**: O arquivo `task-index.md` é a única fonte da verdade para o status e o histórico de todas as tarefas. Mantenha-o sempre atualizado.
 4.  **Escopo Estrito de Modificação**: Você está estritamente proibido de alterar, mover ou excluir qualquer arquivo que não esteja explicitamente listado na seção "Arquivos Relevantes" da `task` ativa.
-5.  **Imutabilidade do Status no YAML**: O cabeçalho `status:` dentro do arquivo `.md` da tarefa é definido apenas na sua criação e não deve ser modificado. O status real é gerenciado pela localização do arquivo e pelo `task-index.md`.
-
+5.  **Imutabilidade do Status no YAML**: O cabeçalho `status:` dentro do arquivo `.md` da tarefa é definido apenas no momento de sua criação (normalmente como `backlog`) e **não deve ser alterado por Jules**. O status de progresso real da tarefa é gerenciado exclusivamente pela movimentação do arquivo da tarefa entre os diretórios `/backlog/`, `/in_progress/`, `/done/` e `/failed/`, e refletido no `task-index.md`.
 ---
 
 ### O Fluxo de Trabalho em 6 Fases
@@ -20,11 +19,18 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
 
 * **Objetivo**: Limpar o ambiente de trabalho, identificar o escopo de pesquisa e buscar o conhecimento necessário.
 * **Ação**:
-    1.  **Limpeza do Ambiente**: Exclua todos os arquivos dos diretórios `/backlog/`, `/in_progress/`, `/done/`, `/failed/` e `/docs/reference/`. Limpe também o conteúdo do `task-index.md`.
-    2.  **Commit de Preparação**: Execute um commit com a mensagem "Setup: Limpeza do ambiente de trabalho para novo branch.".
-    3.  **Análise do Plano**: Leia o `working-plan.md`. Extraia e armazene o timestamp do branch, que está na primeira linha. Identifique as áreas que exigem pesquisa de documentação.
-    4.  **Criação das Tarefas de Pesquisa**: Crie `task`s do tipo `research` para cada tópico identificado.
-    5.  **Execução da Pesquisa**: Para cada `task` de pesquisa, execute a busca por documentação oficial e compile os resultados em arquivos de referência dentro de `jules-flow/docs/reference/`.
+    1.  **Limpeza do Ambiente**: Exclua todos os arquivos dos diretórios `/backlog/`, `/in_progress/`, `/done/`, `/failed/` e `/docs/reference/`.
+    2.  **No arquivo `task-index.md`, preserve apenas o cabeçalho e limpe o restante da tabela**. O cabeçalho esperado é:
+    ```markdown
+    # Índice de Tarefas Jules-Flow
+
+    | ID da Tarefa | Título | Tipo | Status | Prioridade | Dependências | Atribuído |
+    |--------------|--------|------|--------|------------|--------------|-----------|
+    ```
+    3.  **Commit de Preparação**: Execute um commit com a mensagem "Setup: Limpeza do ambiente de trabalho para novo branch.".
+    4.  **Análise do Plano**: Leia o `working-plan.md`. Extraia e armazene o timestamp do branch, que está na primeira linha. Identifique as áreas que exigem pesquisa de documentação.
+    5.  **Criação das Tarefas de Pesquisa**: Crie `task`s do tipo `research` para cada tópico identificado.
+    6.  **Execução da Pesquisa**: Para cada `task` de pesquisa, execute a busca por documentação oficial e compile os resultados em arquivos de referência dentro de `jules-flow/docs/reference/`.
 
 #### Fase 2: Preparação e Decomposição do Plano
 
@@ -34,8 +40,15 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
     2.  Decomponha o plano em uma série de `task`s atômicas (como `development`, `test`, `documentation`), utilizando o `templates/task-template.md`.
     3.  Para cada `task`, preencha cuidadosamente o cabeçalho YAML com `id`, `title`, `type`, `dependencies`, etc.
     4.  Salve cada nova `task` no diretório `jules-flow/backlog/`.
-    5.  Popule o `jules-flow/task-index.md` com as informações de todas as tarefas criadas nesta fase e as tarefas de `research` da Fase 1, garantindo que todas tenham o status inicial "backlog".
-    6.  Ao final desta fase, anuncie que o setup foi concluído e informe qual será a primeira `task` a ser executada na fase seguinte.
+	5.  **Garantir o Cabeçalho do Índice**: Antes de popular o `jules-flow/task-index.md`, verifique se ele contém o cabeçalho da tabela. Se o arquivo estiver vazio ou o cabeçalho estiver ausente, escreva a seguinte estrutura no início do arquivo:
+        ```markdown
+        # Índice de Tarefas Jules-Flow
+
+        | ID da Tarefa | Título | Tipo | Status | Prioridade | Dependências | Atribuído |
+        |--------------|--------|------|--------|------------|--------------|-----------|
+        ```
+    6.  Popule o `jules-flow/task-index.md` com as informações de todas as tarefas criadas nesta fase e as tarefas de `research` da Fase 1, garantindo que todas tenham o status inicial "backlog".
+    7.  Ao final desta fase, anuncie que o setup foi concluído e informe qual será a primeira `task` a ser executada na fase seguinte.
 
 #### Fase 3: Execução Inteligente e Dinâmica de Tarefas
 
