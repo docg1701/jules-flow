@@ -58,6 +58,7 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
 
 * **Ciclo de Execução da Tarefa**:
     a.  **Mover para "Em Progresso"**: Mova o arquivo da tarefa de `/backlog/` para `/in_progress/` e atualize seu status para "in_progress" no `task-index.md`. Realize um commit para registrar o início do trabalho.
+  
     b.  **Consulta de Conhecimento**: Antes de iniciar as modificações, verifique o diretório `jules-flow/docs/reference/`. Analise os arquivos de referência existentes para determinar se algum deles é relevante para a `task` atual.
     c.  **Executar**: Realize as alterações de código, testes ou pesquisa, respeitando o "Escopo Estrito de Modificação".
     d.  **Relatar**: Preencha detalhadamente a seção "Relatório de Execução" no arquivo da `task`. Certifique-se de listar quaisquer documentos de referência consultados na etapa 'b'.
