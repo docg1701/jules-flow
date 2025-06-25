@@ -21,12 +21,12 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
 * **Ação**:
     1.  **Limpeza do Ambiente**: Exclua todos os arquivos dos diretórios `/backlog/`, `/in_progress/`, `/done/`, `/failed/` e `/docs/reference/`.
     2.  **No arquivo `task-index.md`, preserve apenas o cabeçalho e limpe o restante da tabela**. O cabeçalho esperado é:
-    ```markdown
-    # Índice de Tarefas Jules-Flow
+    	```markdown
+    	# Índice de Tarefas Jules-Flow
 
-    | ID da Tarefa | Título | Tipo | Status | Prioridade | Dependências | Atribuído |
-    |--------------|--------|------|--------|------------|--------------|-----------|
-    ```
+    	| ID da Tarefa | Título | Tipo | Status | Prioridade | Dependências | Atribuído |
+    	|--------------|--------|------|--------|------------|--------------|-----------|
+    	```
     3.  **Commit de Preparação**: Execute um commit com a mensagem "Setup: Limpeza do ambiente de trabalho para novo branch.".
     4.  **Análise do Plano**: Leia o `working-plan.md`. Extraia e armazene o timestamp do branch, que está na primeira linha. Identifique as áreas que exigem pesquisa de documentação.
     5.  **Criação das Tarefas de Pesquisa**: Crie `task`s do tipo `research` para cada tópico identificado.
@@ -40,7 +40,7 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
     2.  Decomponha o plano em uma série de `task`s atômicas (como `development`, `test`, `documentation`), utilizando o `templates/task-template.md`.
     3.  Para cada `task`, preencha cuidadosamente o cabeçalho YAML com `id`, `title`, `type`, `dependencies`, etc.
     4.  Salve cada nova `task` no diretório `jules-flow/backlog/`.
-	5.  **Garantir o Cabeçalho do Índice**: Antes de popular o `jules-flow/task-index.md`, verifique se ele contém o cabeçalho da tabela. Se o arquivo estiver vazio ou o cabeçalho estiver ausente, escreva a seguinte estrutura no início do arquivo:
+    5.  **Garantir o Cabeçalho do Índice**: Antes de popular o `jules-flow/task-index.md`, verifique se ele contém o cabeçalho da tabela. Se o arquivo estiver vazio ou o cabeçalho estiver ausente, escreva a seguinte estrutura no início do arquivo:
         ```markdown
         # Índice de Tarefas Jules-Flow
 
@@ -69,6 +69,7 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
   
   	1.  Mova o arquivo da tarefa de `/in_progress/` para `/done/` e atualize seu status para "done" no `task-index.md`.
   	2.  **Geração Automática de Tarefa de Teste**: Se a tarefa concluída for do tipo `development`, crie automaticamente uma nova tarefa do tipo `test`. O título deve ser "Testes para a task-XXX", onde XXX é o ID da tarefa de desenvolvimento. Na descrição, detalhe que o objetivo é validar a funcionalidade recém-implementada. Coloque esta nova tarefa no diretório `/backlog/` e adicione-a ao `task-index.md`.
+    
     g.  **Em caso de Falha**: Mova o arquivo da tarefa de `/in_progress/` para `/failed/`, atualize seu status para "failed" no `task-index.md`, e preencha o "Relatório de Execução" com os logs de erro relevantes. Anuncie a falha e pare todo o trabalho subsequente.
 
     h.  **Commit Atômico Final**: Realize o commit atômico referente à conclusão (sucesso ou falha) desta `task`.
