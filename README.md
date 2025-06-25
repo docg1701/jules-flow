@@ -14,7 +14,7 @@ Este é o primeiro passo para integrar o sistema. Ele deve ser executado uma ún
 
 1.  **Adicione o Submódulo**: Execute o comando abaixo, substituindo a URL pelo endereço do seu repositório `jules-flow`.
     ```bash
-    git submodule add [https://github.com/seu-usuario/jules-flow.git](https://github.com/seu-usuario/jules-flow.git) jules-flow
+    git submodule add https://github.com/docg1701/jules-flow.git jules-flow
     ```
     * Este comando clona o repositório `jules-flow` para um diretório de mesmo nome e cria um arquivo `.gitmodules` para rastrear o vínculo.
 
@@ -30,7 +30,7 @@ Quando um novo desenvolvedor (ou você mesmo, em outra máquina) for clonar um p
 
 * **Opção A (Recomendada): Clonar o repositório e o submódulo de uma só vez.**
     ```bash
-    git clone --recurse-submodules [https://github.com/seu-usuario/seu-projeto.git](https://github.com/seu-usuario/seu-projeto.git)
+    git clone --recurse-submodules https://github.com/docg1701/jules-flow.git
     ```
 
 * **Opção B: Se você já clonou o projeto sem o submódulo.**
