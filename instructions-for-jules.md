@@ -51,30 +51,18 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
     7.  Ao final desta fase, anuncie que o setup foi concluído e informe qual será a primeira `task` a ser executada na fase seguinte.
 
 ### Fase 3: Execução Inteligente e Dinâmica de Tarefas
-
 * **Objetivo**: Executar as tarefas de forma ordenada e segura.
-
 * **Ação**: Siga o ciclo de execução para cada tarefa, uma de cada vez.
-
 * **Ciclo de Execução da Tarefa**:
-  
     a.  **Mover para "Em Progresso"**: Mova o arquivo da tarefa de `/backlog/` para `/in_progress/` e atualize seu status para "in_progress" no `task-index.md`. Realize um commit para registrar o início do trabalho.
-  
     b.  **Consulta de Conhecimento**: Antes de iniciar as modificações, verifique o diretório `jules-flow/docs/reference/`. Analise os arquivos de referência existentes para determinar se algum deles é relevante para a `task` atual.
-  
     c.  **Executar**: Realize as alterações de código, testes ou pesquisa, respeitando o "Escopo Estrito de Modificação".
-  
     d.  **Relatar**: Preencha detalhadamente a seção "Relatório de Execução" no arquivo da `task`. Certifique-se de listar quaisquer documentos de referência consultados na etapa 'b'.
-  
     e.  **Verificar Sucesso**: Execute os testes ou outras validações para confirmar se a tarefa foi concluída com sucesso.
-  
     f.  **Em caso de Sucesso**:
-  
   	1.  Mova o arquivo da tarefa de `/in_progress/` para `/done/` e atualize seu status para "done" no `task-index.md`.
   	2.  **Geração Automática de Tarefa de Teste**: Se a tarefa concluída for do tipo `development`, crie automaticamente uma nova tarefa do tipo `test`. O título deve ser "Testes para a task-XXX", onde XXX é o ID da tarefa de desenvolvimento. Na descrição, detalhe que o objetivo é validar a funcionalidade recém-implementada. Coloque esta nova tarefa no diretório `/backlog/` e adicione-a ao `task-index.md`.
-
     g.  **Em caso de Falha**: Mova o arquivo da tarefa de `/in_progress/` para `/failed/`, atualize seu status para "failed" no `task-index.md`, e preencha o "Relatório de Execução" com os logs de erro relevantes. Anuncie a falha e pare todo o trabalho subsequente.
-  
     h.  **Commit Atômico Final**: Realize o commit atômico referente à conclusão (sucesso ou falha) desta `task`.
   
 #### Fase 4: Geração de Relatório e Finalização
