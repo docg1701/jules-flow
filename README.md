@@ -151,7 +151,7 @@ Use os prompts a seguir para gerenciar o trabalho de Jules no branch de desenvol
 Olá, Jules. Estamos iniciando o trabalho em um novo branch. Sua missão é executar o plano de trabalho recém-criado. Siga rigorosamente esta sequência:
 
 1.  **Limpeza do Ambiente de Trabalho**: Prepare o diretório `jules-flow` para o novo ciclo.
-    * Exclua todos os arquivos das pastas `jules-flow/backlog/` e `jules-flow/done/`.
+    * Exclua todos os arquivos das pastas `jules-flow/backlog/`, `jules-flow/in_progress/`, `jules-flow/done/` e `jules-flow/failed/`.
     * Limpe completamente o conteúdo do arquivo `jules-flow/task-index.md`.
     * Exclua todos os arquivos de `jules-flow/docs/reference/`.
     * Execute um commit com a mensagem "Setup: Limpeza do ambiente de trabalho para novo branch.".
@@ -201,7 +201,7 @@ Olá, Jules. Todo o trabalho de desenvolvimento neste branch foi concluído. Sua
 
 2.  **Limpeza Final do Branch**:
     * Preserve o diretório `jules-flow/final-reports/`.
-    * Exclua o conteúdo dos diretórios `jules-flow/backlog/`, `jules-flow/done/` e `jules-flow/docs/reference/`.
+    * Exclua o conteúdo dos diretórios `jules-flow/backlog/`, `jules-flow/in_progress/`, `jules-flow/done/`, `jules-flow/failed/` e `jules-flow/docs/reference/`.
     * Limpe os arquivos `jules-flow/task-index.md` e `jules-flow/working-plan.md`.
 
 3.  **Commit de Finalização**: Execute um commit com a mensagem "Finalize: Arquivamento do relatório final e limpeza do branch.".
@@ -233,6 +233,37 @@ Siga rigorosamente esta sequência:
     * **Modificação**: Com base na sua análise do relatório, edite os arquivos de documentação aprovados para que reflitam o estado atual do projeto de forma clara e técnica.
     * **Finalização**: Preencha o "Relatório de Execução" na `task` de documentação, detalhando as alterações. Mova a `task` para a pasta `/done/`, atualize o `task-index.md` e execute um commit atômico com a mensagem "docs: Atualiza a documentação do projeto.".
     * **Anúncio**: Informe que a documentação foi atualizada com sucesso.
+```
+
+**Prompt 2.5: Revisar o Trabalho do Branch**
+```markdown
+Olá, Jules. O desenvolvimento principal neste branch foi concluído. Antes de finalizar, sua missão é realizar uma revisão de qualidade no código produzido.
+
+Siga rigorosamente esta sequência:
+
+1.  **Análise do Escopo**: Revise o relatório final em `jules-flow/final-reports/` e o histórico de commits para entender todo o trabalho realizado.
+2.  **Criação da Tarefa de Revisão**: Crie uma única `task` do tipo `review` para rastrear este trabalho, conforme detalhado na "Fase 5" de suas instruções.
+3.  **Execução da Revisão**: Analise o código em busca de inconsistências, débitos técnicos e oportunidades de refatoração.
+4.  **Relatório e Ação**: Documente suas descobertas no relatório da tarefa. Se aplicável, crie novas tarefas no backlog para as melhorias identificadas.
+5.  **Finalização**: Conclua a tarefa de revisão e anuncie que a análise de qualidade foi finalizada, listando as novas tarefas criadas, se houver.
+```
+
+**Prompt 2.6: Analisar e Corrigir Tarefa com Falha**
+```markdown
+Olá, Jules. Identificamos que a tarefa `task-XXX` falhou e o trabalho está bloqueado. Sua missão é investigar o problema e preparar o terreno para a correção.
+
+1.  **Análise da Falha**:
+    * Abra o arquivo da `task-XXX` no diretório `/failed/`.
+    * Examine detalhadamente o "Relatório de Execução" e os logs de erro que você registrou.
+
+2.  **Plano de Correção**:
+    * Com base na sua análise, crie uma nova tarefa de desenvolvimento no `/backlog/`.
+    * O título da nova tarefa deve ser: "Correção da task-XXX: [Causa Resumida do Erro]".
+    * Na descrição, detalhe a causa raiz do problema e proponha um passo a passo técnico para a solução.
+
+3.  **Finalização**:
+    * Após criar a tarefa de correção, mova a tarefa original (`task-XXX`) da pasta `/failed/` para a pasta `/done/`, e atualize seu status para "done" no `task-index.md`. O "Relatório de Execução" da tarefa original já contém o histórico da falha, que é suficiente.
+    * Anuncie que a análise foi concluída e a tarefa de correção foi criada.
 ```
 
 ## Estrutura de Diretórios

@@ -26,4 +26,8 @@ assignee: Jules
 
 ### Relatório de Execução
 
-(Esta seção deve ser deixada em branco no template. Em caso de falha, preencha com os logs de erro.)
+(Esta seção deve ser preenchida por Jules ao concluir a tarefa.)
+
+* **Resumo das Alterações**: (Descrição concisa do que foi implementado ou corrigido.)
+* **Resultado**: (Sucesso | Falha)
+* **Observações**: (Detalhes adicionais, como decisões de implementação, desafios encontrados ou logs de erro em caso de falha.)

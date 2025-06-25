@@ -8,6 +8,7 @@ Este documento detalha os princípios e o fluxo de trabalho que você, Jules, de
 2.  **Formato de Arquivo Padrão**: Todos os arquivos de documentação, tarefas e relatórios que você criar devem ser escritos em Markdown e utilizar a extensão `.md`.
 3.  **Commit Atômico por Tarefa**: Cada `task` concluída deve resultar em um único commit atômico. Este commit deve conter todas as alterações relacionadas àquela tarefa específica: modificações de código, a movimentação do arquivo da `task` entre as pastas de estado (`/in_progress/`, `/done/`, `/failed/`), e a atualização do `task-index.md`.
 4.  **Escopo Estrito de Modificação**: Você está **estritamente proibido** de alterar, adicionar ou excluir qualquer arquivo que não esteja explicitamente listado na seção "Arquivos Relevantes" da `task` ativa. Esta é a sua regra mais crítica.
+5.  **Fonte da Verdade do Status**: O status de uma tarefa é definido unicamente por sua localização nos diretórios de estado (`/backlog/`, `/in_progress/`, etc.) e seu registro correspondente em `task-index.md`. O cabeçalho `status:` dentro do arquivo `.md` da tarefa é definido apenas na sua criação e não deve ser modificado durante o ciclo de vida.
 
 ## O Fluxo de Trabalho Baseado em Plano
 
@@ -31,11 +32,15 @@ Esta fase é iniciada pelo "Prompt de Início dos Trabalhos".
 
 Esta fase é iniciada pelo "Prompt para Continuar Trabalho no Branch". Sua lógica de trabalho é agora baseada em estado e dependências.
 
+* **Nota sobre Execução em Lote**: Se o prompt do desenvolvedor solicitar a execução de um lote de tarefas (ex: "Execute as próximas X tarefas"), você deve repetir o "Ciclo de Execução da Tarefa" sequencialmente para o número de tarefas especificado, sem aguardar por um novo prompt entre elas. Continue até que o lote seja concluído, uma tarefa falhe, ou não haja mais tarefas elegíveis para execução.
+
 * **Objetivo**: Executar tarefas de forma autônoma, respeitando dependências e gerenciando estados de progresso e falha.
 * **Ação**:
     1.  **Recuperação de Contexto (Otimizada)**:
         a. Verifique o diretório `/in_progress/`. Se houver uma tarefa, prossiga para a execução dela.
-        b. Se `/in_progress/` estiver vazio, verifique o diretório `/failed/`. Se houver tarefas, informe o desenvolvedor, anuncie que o trabalho está bloqueado e aguarde novas instruções. Não prossiga.
+        b. Se `/in_progress/` estiver vazio, verifique o diretório `/failed/`.
+           i. Se houver tarefas, informe o desenvolvedor sobre quais tarefas falharam, anuncie que o trabalho está bloqueado e aguarde novas instruções.
+           ii. O desenvolvedor pode fornecer um prompt para "Analisar e Corrigir Tarefa com Falha". Neste caso, sua missão é investigar o "Relatório de Execução" da tarefa falha, identificar a causa raiz do erro e criar uma nova `task` de `development` no `/backlog/` com um plano de ação detalhado para a correção. Após criar a tarefa de correção, aguarde o próximo prompt de "Continuar Trabalho".
         c. Se ambos estiverem vazios, prossiga para a seleção de uma nova tarefa.
 
     2.  **Seleção de Nova Tarefa (Baseada em Dependências)**:
@@ -50,7 +55,9 @@ Esta fase é iniciada pelo "Prompt para Continuar Trabalho no Branch". Sua lógi
         b. **Executar**: Realize as alterações de código, testes ou pesquisa, respeitando o "Escopo Estrito de Modificação".
         c. **Relatar**: Preencha detalhadamente a seção "Relatório de Execução" no arquivo da `task`.
         d. **Verificar Sucesso**: Execute os testes ou outras validações para confirmar se a tarefa foi concluída com sucesso.
-        e. **Em caso de Sucesso**: Mova o arquivo da tarefa de `/in_progress/` para `/done/` e atualize seu status para "done" no `task-index.md`.
+		e. **Em caso de Sucesso**:
+           i. Mova o arquivo da tarefa de `/in_progress/` para `/done/` e atualize seu status para "done" no `task-index.md`.
+           ii. **Geração Automática de Tarefa de Teste**: Se a tarefa concluída for do tipo `development`, crie automaticamente uma nova tarefa do tipo `test`. O título deve ser "Testes para a task-XXX", onde XXX é o ID da tarefa de desenvolvimento. Na descrição, detalhe que o objetivo é validar a funcionalidade recém-implementada. Coloque esta nova tarefa no diretório `/backlog/` e adicione-a ao `task-index.md`.
         f. **Em caso de Falha**: Mova o arquivo da tarefa de `/in_progress/` para `/failed/`, atualize seu status para "failed" no `task-index.md`, e preencha o "Relatório de Execução" com os logs de erro relevantes. Anuncie a falha e pare todo o trabalho subsequente.
         g. **Commit Atômico Final**: Realize o commit atômico referente à conclusão (sucesso ou falha) desta `task`.
 
@@ -74,3 +81,21 @@ Esta fase é iniciada por um prompt específico e ocorre após a finalização b
 * **Ação**:
     1.  O fluxo para esta fase permanece o mesmo. Analise o relatório final e a lista de arquivos fornecida no prompt.
     2.  Crie uma única `task` de `documentation` para rastreabilidade, execute as modificações, preencha o relatório e realize o commit atômico.
+
+### Fase 5: Verificação de Inconsistências e Refatoração
+
+Esta fase é iniciada por um prompt específico do desenvolvedor, geralmente após a conclusão de um conjunto de funcionalidades (um épico).
+
+* **Objetivo**: Realizar uma verificação de sanidade no código produzido para identificar e corrigir possíveis inconsistências, débitos técnicos ou oportunidades de melhoria.
+* **Ação**:
+    1.  O prompt fornecerá um escopo para a revisão (ex: "revise as funcionalidades implementadas neste branch").
+    2.  Crie uma única `task` do tipo `review`. O título deve ser "Revisão de Qualidade do Branch `jules-YYYYMMDDHHMMSS`".
+    3.  Na descrição da tarefa, liste os principais arquivos e funcionalidades que serão analisados.
+    4.  Execute a análise do código em busca de:
+        * Duplicação de código.
+        * Lógicas complexas que podem ser simplificadas.
+        * Inconsistências de padrão de código.
+        * Potenciais bugs ou casos de borda não tratados.
+    5.  Preencha o "Relatório de Execução" da tarefa de revisão com todas as suas descobertas.
+    6.  Se forem encontradas oportunidades de melhoria claras e de baixo risco, crie novas `task`s do tipo `development` ou `refactor` para cada uma e adicione-as ao `/backlog/`.
+    7.  Conclua a tarefa de revisão, movendo-a para `/done/` e atualizando o `task-index.md`. Realize o commit atômico com a mensagem "chore: Conclui a revisão de qualidade do branch".
