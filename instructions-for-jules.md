@@ -1,101 +1,79 @@
-# Instruções de Operação para Jules
+# Instruções Operacionais para Jules
 
-Este documento detalha os princípios e o fluxo de trabalho que você, Jules, deve seguir estritamente para o desenvolvimento de projetos. Seu propósito é garantir um desenvolvimento transparente, rastreável, documentado e de alta qualidade, guiado por um plano pré-definido.
+Este documento detalha o fluxo de trabalho completo que você, Jules, deve seguir. Sua aderência estrita a estas fases e princípios é crucial para a organização e o sucesso do projeto.
 
-## Princípios Gerais
+---
 
-1.  **Comunicação Formal**: Você não deve usar emojis em nenhuma comunicação, documentação ou código. A comunicação deve ser clara, técnica e direta.
-2.  **Formato de Arquivo Padrão**: Todos os arquivos de documentação, tarefas e relatórios que você criar devem ser escritos em Markdown e utilizar a extensão `.md`.
-3.  **Commit Atômico por Tarefa**: Cada `task` concluída deve resultar em um único commit atômico. Este commit deve conter todas as alterações relacionadas àquela tarefa específica: modificações de código, a movimentação do arquivo da `task` entre as pastas de estado (`/in_progress/`, `/done/`, `/failed/`), e a atualização do `task-index.md`.
-4.  **Escopo Estrito de Modificação**: Você está **estritamente proibido** de alterar, adicionar ou excluir qualquer arquivo que não esteja explicitamente listado na seção "Arquivos Relevantes" da `task` ativa. Esta é a sua regra mais crítica.
-5.  **Fonte da Verdade do Status**: O status de uma tarefa é definido unicamente por sua localização nos diretórios de estado (`/backlog/`, `/in_progress/`, etc.) e seu registro correspondente em `task-index.md`. O cabeçalho `status:` dentro do arquivo `.md` da tarefa é definido apenas na sua criação e não deve ser modificado durante o ciclo de vida.
+### Princípios Fundamentais
 
-## O Fluxo de Trabalho Baseado em Plano
+1.  **Comunicação via Commits**: Cada passo significativo que você toma deve ser registrado através de um commit atômico e bem descrito.
+2.  **Gestão de Estado por Arquivos**: O estado do projeto é definido pela localização dos arquivos de tarefa (`task-XXX.md`) nos diretórios `/backlog/`, `/in_progress/`, `/done/` e `/failed/`.
+3.  **Índice Central**: O arquivo `task-index.md` é a única fonte da verdade para o status e o histórico de todas as tarefas. Mantenha-o sempre atualizado.
+4.  **Escopo Estrito de Modificação**: Você está estritamente proibido de alterar, mover ou excluir qualquer arquivo que não esteja explicitamente listado na seção "Arquivos Relevantes" da `task` ativa.
+5.  **Imutabilidade do Status no YAML**: O cabeçalho `status:` dentro do arquivo `.md` da tarefa é definido apenas na sua criação e não deve ser modificado. O status real é gerenciado pela localização do arquivo e pelo `task-index.md`.
 
-Seu trabalho é sempre guiado por um arquivo `jules-flow/working-plan.md`. Você deve seguir as fases abaixo em ordem, acionado pelos prompts fornecidos pelo desenvolvedor.
+---
 
-### Fase 1: Preparação e Decomposição do Plano
+### O Fluxo de Trabalho em 6 Fases
 
-Esta fase é iniciada pelo "Prompt de Início dos Trabalhos".
+#### Fase 1: Descoberta e Pesquisa
 
-* **Objetivo**: Preparar o ambiente, transformar o plano mestre em tarefas executáveis e gerar IDs únicos.
+* **Objetivo**: Limpar o ambiente de trabalho, identificar o escopo de pesquisa e buscar o conhecimento necessário.
 * **Ação**:
-    1.  Execute a limpeza do ambiente de trabalho, conforme instruído no prompt. Crie os diretórios de estado, se não existirem: `/backlog/`, `/in_progress/`, `/done/`, `/failed/`.
-    2.  Leia o arquivo `jules-flow/working-plan.md`.
-    3.  Identifique e armazene o `timestamp` do branch, que está na primeira linha do plano.
-    4.  Com base na seção "Passo a Passo da Execução", gere os arquivos `.md` para todas as `task`s listadas.
-    5.  **Geração de IDs**: Para cada tarefa, gere um ID sequencial (ex: `task-001`, `task-002`, ...), preencha o campo `id` e use este ID para nomear o arquivo (ex: `task-001.md`).
-    6.  Coloque todos os novos arquivos de `task` no diretório `jules-flow/backlog/`.
-    7.  Crie o `task-index.md` inicial, listando todas as tarefas geradas com o status "backlog".
+    1.  **Limpeza do Ambiente**: Exclua todos os arquivos dos diretórios `/backlog/`, `/in_progress/`, `/done/`, `/failed/` e `/docs/reference/`. Limpe também o conteúdo do `task-index.md`.
+    2.  **Commit de Preparação**: Execute um commit com a mensagem "Setup: Limpeza do ambiente de trabalho para novo branch.".
+    3.  **Análise do Plano**: Leia o `working-plan.md`. Extraia e armazene o timestamp do branch, que está na primeira linha. Identifique as áreas que exigem pesquisa de documentação.
+    4.  **Criação das Tarefas de Pesquisa**: Crie `task`s do tipo `research` para cada tópico identificado.
+    5.  **Execução da Pesquisa**: Para cada `task` de pesquisa, execute a busca por documentação oficial e compile os resultados em arquivos de referência dentro de `jules-flow/docs/reference/`.
 
-### Fase 2: Execução Inteligente e Dinâmica de Tarefas
+#### Fase 2: Preparação e Decomposição do Plano
 
-Esta fase é iniciada pelo "Prompt para Continuar Trabalho no Branch". Sua lógica de trabalho é agora baseada em estado e dependências.
-
-* **Nota sobre Execução em Lote**: Se o prompt do desenvolvedor solicitar a execução de um lote de tarefas (ex: "Execute as próximas X tarefas"), você deve repetir o "Ciclo de Execução da Tarefa" sequencialmente para o número de tarefas especificado, sem aguardar por um novo prompt entre elas. Continue até que o lote seja concluído, uma tarefa falhe, ou não haja mais tarefas elegíveis para execução.
-
-* **Objetivo**: Executar tarefas de forma autônoma, respeitando dependências e gerenciando estados de progresso e falha.
+* **Objetivo**: Converter o `working-plan.md` em tarefas executáveis.
 * **Ação**:
-    1.  **Recuperação de Contexto (Otimizada)**:
-        a. Verifique o diretório `/in_progress/`. Se houver uma tarefa, prossiga para a execução dela.
-        b. Se `/in_progress/` estiver vazio, verifique o diretório `/failed/`.
-           i. Se houver tarefas, informe o desenvolvedor sobre quais tarefas falharam, anuncie que o trabalho está bloqueado e aguarde novas instruções.
-           ii. O desenvolvedor pode fornecer um prompt para "Analisar e Corrigir Tarefa com Falha". Neste caso, sua missão é investigar o "Relatório de Execução" da tarefa falha, identificar a causa raiz do erro e criar uma nova `task` de `development` no `/backlog/` com um plano de ação detalhado para a correção. Após criar a tarefa de correção, aguarde o próximo prompt de "Continuar Trabalho".
-        c. Se ambos estiverem vazios, prossiga para a seleção de uma nova tarefa.
+    1.  Leia o `working-plan.md` para entender o escopo completo.
+    2.  Decomponha o plano em uma série de `task`s atômicas (como `development`, `test`, `documentation`), utilizando o `templates/task-template.md`.
+    3.  Para cada `task`, preencha cuidadosamente o cabeçalho YAML com `id`, `title`, `type`, `dependencies`, etc.
+    4.  Salve cada nova `task` no diretório `jules-flow/backlog/`.
+    5.  Popule o `jules-flow/task-index.md` com as informações de todas as tarefas criadas nesta fase e as tarefas de `research` da Fase 1, garantindo que todas tenham o status inicial "backlog".
+    6.  Ao final desta fase, anuncie que o setup foi concluído e informe qual será a primeira `task` a ser executada na fase seguinte.
 
-    2.  **Seleção de Nova Tarefa (Baseada em Dependências)**:
-        a. Analise o diretório `/backlog/`.
-        b. Leia o `task-index.md` para saber o status de todas as tarefas.
-        c. Identifique a primeira tarefa no backlog que não tenha dependências OU cujas tarefas listadas em `dependencies` já possuam o status "done" no `task-index.md`.
-        d. Se nenhuma tarefa puder ser iniciada, informe ao desenvolvedor sobre o bloqueio de dependências e aguarde.
-        e. Se uma tarefa for selecionada, anuncie qual será executada.
+#### Fase 3: Execução Inteligente e Dinâmica de Tarefas
 
-    3.  **Ciclo de Execução da Tarefa**:
+* **Objetivo**: Executar as tarefas de forma ordenada e segura.
+* **Ação**: Siga o ciclo de execução para cada tarefa, uma de cada vez.
+* **Ciclo de Execução da Tarefa**:
         a. **Mover para "Em Progresso"**: Mova o arquivo da tarefa de `/backlog/` para `/in_progress/` e atualize seu status para "in_progress" no `task-index.md`. Realize um commit para registrar o início do trabalho.
-        b. **Executar**: Realize as alterações de código, testes ou pesquisa, respeitando o "Escopo Estrito de Modificação".
-        c. **Relatar**: Preencha detalhadamente a seção "Relatório de Execução" no arquivo da `task`.
-        d. **Verificar Sucesso**: Execute os testes ou outras validações para confirmar se a tarefa foi concluída com sucesso.
-		e. **Em caso de Sucesso**:
+        b. **Consulta de Conhecimento**: Antes de iniciar as modificações, verifique o diretório `jules-flow/docs/reference/`. Analise os arquivos de referência existentes para determinar se algum deles é relevante para a `task` atual.
+        c. **Executar**: Realize as alterações de código, testes ou pesquisa, respeitando o "Escopo Estrito de Modificação".
+        d. **Relatar**: Preencha detalhadamente a seção "Relatório de Execução" no arquivo da `task`. Certifique-se de listar quaisquer documentos de referência consultados na etapa 'b'.
+        e. **Verificar Sucesso**: Execute os testes ou outras validações para confirmar se a tarefa foi concluída com sucesso.
+        f. **Em caso de Sucesso**:
            i. Mova o arquivo da tarefa de `/in_progress/` para `/done/` e atualize seu status para "done" no `task-index.md`.
            ii. **Geração Automática de Tarefa de Teste**: Se a tarefa concluída for do tipo `development`, crie automaticamente uma nova tarefa do tipo `test`. O título deve ser "Testes para a task-XXX", onde XXX é o ID da tarefa de desenvolvimento. Na descrição, detalhe que o objetivo é validar a funcionalidade recém-implementada. Coloque esta nova tarefa no diretório `/backlog/` e adicione-a ao `task-index.md`.
-        f. **Em caso de Falha**: Mova o arquivo da tarefa de `/in_progress/` para `/failed/`, atualize seu status para "failed" no `task-index.md`, e preencha o "Relatório de Execução" com os logs de erro relevantes. Anuncie a falha e pare todo o trabalho subsequente.
-        g. **Commit Atômico Final**: Realize o commit atômico referente à conclusão (sucesso ou falha) desta `task`.
+        g. **Em caso de Falha**: Mova o arquivo da tarefa de `/in_progress/` para `/failed/`, atualize seu status para "failed" no `task-index.md`, e preencha o "Relatório de Execução" com os logs de erro relevantes. Anuncie a falha e pare todo o trabalho subsequente.
+        h. **Commit Atômico Final**: Realize o commit atômico referente à conclusão (sucesso ou falha) desta `task`.
 
-### Fase 3: Geração de Relatório e Finalização
+#### Fase 4: Geração de Relatório e Finalização
 
-Esta fase é iniciada pelo "Prompt para Finalizar e Limpar o Branch".
-
-* **Objetivo**: Consolidar os resultados, arquivar um relatório final e limpar o ambiente de trabalho.
+* **Objetivo**: Consolidar o trabalho e limpar o ambiente.
 * **Ação**:
-    1.  **Verificação de Sanidade**: Antes de prosseguir, verifique se os diretórios `/in_progress/` e `/failed/` estão vazios. Se não estiverem, recuse a finalização e informe ao desenvolvedor que existem tarefas inacabadas ou com falha.
-    2.  Compile os "Relatórios de Execução" de todas as `task`s em `/done/` em um único relatório abrangente.
-    3.  Use o `timestamp` do branch (obtido na Fase 1) para nomear o relatório final e salvá-lo em `jules-flow/final-reports/report-<timestamp>.md`.
-    4.  Execute a limpeza final: preserve a pasta `/final-reports/`, mas exclua o conteúdo de `/backlog/`, `/in_progress/`, `/done/`, `/failed/`, e `/docs/reference/`, e limpe os arquivos `task-index.md` e `working-plan.md`.
-    5.  Realize o commit de finalização.
+    1.  Verifique se os diretórios `/backlog/`, `/in_progress/` e `/failed/` estão vazios.
+    2.  Compile um relatório final (`final-report-YYYYMMDDHHMMSS.md`) a partir das seções "Relatório de Execução" de todas as tarefas em `/done/`.
+    3.  Salve o relatório em `jules-flow/final-reports/`.
+    4.  Exclua os diretórios de estado (`/backlog/`, `/in_progress/`, `/done/`, `/failed/`) e o `task-index.md`.
 
-### Fase 4: Atualização da Documentação do Projeto
+#### Fase 5: Atualização da Documentação do Projeto
 
-Esta fase é iniciada por um prompt específico e ocorre após a finalização bem-sucedida da Fase 3.
-
-* **Objetivo**: Atualizar a documentação principal do projeto de forma controlada.
+* **Objetivo**: Manter a documentação do projeto sincronizada com as mudanças.
 * **Ação**:
-    1.  O fluxo para esta fase permanece o mesmo. Analise o relatório final e a lista de arquivos fornecida no prompt.
-    2.  Crie uma única `task` de `documentation` para rastreabilidade, execute as modificações, preencha o relatório e realize o commit atômico.
+    1.  Com base no relatório final, identifique os impactos na documentação.
+    2.  Crie uma `task` do tipo `documentation`.
+    3.  Execute a tarefa, atualizando os arquivos de documentação necessários (ex: `README.md`, `docs/guides/*`).
 
-### Fase 5: Verificação de Inconsistências e Refatoração
+#### Fase 6: Verificação de Inconsistências e Refatoração
 
-Esta fase é iniciada por um prompt específico do desenvolvedor, geralmente após a conclusão de um conjunto de funcionalidades (um épico).
-
-* **Objetivo**: Realizar uma verificação de sanidade no código produzido para identificar e corrigir possíveis inconsistências, débitos técnicos ou oportunidades de melhoria.
+* **Objetivo**: Garantir a qualidade e a consistência do código antes do merge.
 * **Ação**:
-    1.  O prompt fornecerá um escopo para a revisão (ex: "revise as funcionalidades implementadas neste branch").
-    2.  Crie uma única `task` do tipo `review`. O título deve ser "Revisão de Qualidade do Branch `jules-YYYYMMDDHHMMSS`".
-    3.  Na descrição da tarefa, liste os principais arquivos e funcionalidades que serão analisados.
-    4.  Execute a análise do código em busca de:
-        * Duplicação de código.
-        * Lógicas complexas que podem ser simplificadas.
-        * Inconsistências de padrão de código.
-        * Potenciais bugs ou casos de borda não tratados.
-    5.  Preencha o "Relatório de Execução" da tarefa de revisão com todas as suas descobertas.
-    6.  Se forem encontradas oportunidades de melhoria claras e de baixo risco, crie novas `task`s do tipo `development` ou `refactor` para cada uma e adicione-as ao `/backlog/`.
-    7.  Conclua a tarefa de revisão, movendo-a para `/done/` e atualizando o `task-index.md`. Realize o commit atômico com a mensagem "chore: Conclui a revisão de qualidade do branch".
+    1.  Execute uma análise completa do código modificado.
+    2.  Verifique se há inconsistências, duplicação de código ou oportunidades de refatoração.
+    3.  Crie `task`s de `refactor` ou `fix` se necessário e execute-as.
