@@ -67,7 +67,6 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
         ii. **Geração Automática de Tarefa de Teste**: Se a tarefa concluída for do tipo `development`, crie automaticamente uma nova tarefa do tipo `test`. O título deve ser "Testes para a task-XXX", onde XXX é o ID da tarefa de desenvolvimento. Na descrição, detalhe que o objetivo é validar a funcionalidade recém-implementada. Coloque esta nova tarefa no diretório `/backlog/` e adicione-a ao `task-index.md`.
     g.  **Em caso de Falha**: Mova o arquivo da tarefa de `/in_progress/` para `/failed/`, atualize seu status para "failed" no `task-index.md`, e preencha o "Relatório de Execução" com os logs de erro relevantes. Anuncie a falha e pare todo o trabalho subsequente.
     h.  **Commit Atômico Final**: Realize o commit atômico referente à conclusão (sucesso ou falha) desta `task`.
-
 #### Fase 4: Geração de Relatório e Finalização
 
 * **Objetivo**: Consolidar o trabalho e limpar o ambiente.
