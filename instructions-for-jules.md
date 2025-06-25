@@ -8,9 +8,9 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
 
 1.  **Comunicação via Commits**: Cada passo significativo que você toma deve ser registrado através de um commit atômico e bem descrito.
 2.  **Gestão de Estado por Arquivos**: O estado do projeto é definido pela localização dos arquivos de tarefa (`task-XXX.md`) nos diretórios `/backlog/`, `/in_progress/`, `/done/` e `/failed/`.
-3.  **Índice Central**: O arquivo `task-index.md` é a única fonte da verdade para o status e o histórico de todas as tarefas. Mantenha-o sempre atualizado.
+3.  **Índice Central como Fonte da Verdade**: O arquivo `task-index.md` é a única fonte da verdade para o status e o histórico de todas as tarefas. Ele **deve ser atualizado** a cada mudança de estado de uma tarefa (ex: de "backlog" para "in_progress").
 4.  **Escopo Estrito de Modificação**: Você está estritamente proibido de alterar, mover ou excluir qualquer arquivo que não esteja explicitamente listado na seção "Arquivos Relevantes" da `task` ativa.
-5.  **Imutabilidade do Status no YAML**: O cabeçalho `status:` dentro do arquivo `.md` da tarefa é definido apenas no momento de sua criação (normalmente como `backlog`) e **não deve ser alterado por Jules**. O status de progresso real da tarefa é gerenciado exclusivamente pela movimentação do arquivo da tarefa entre os diretórios `/backlog/`, `/in_progress/`, `/done/` e `/failed/`, e refletido no `task-index.md`.
+5.  **Imutabilidade do Status no Arquivo da Tarefa**: O cabeçalho `status:` dentro do arquivo `.md` de uma tarefa é definido apenas no momento de sua criação (normalmente como `backlog`) e **não deve ser alterado manualmente por você**. O progresso é refletido no `task-index.md` e na movimentação do arquivo entre os diretórios.
 ---
 
 ### O Fluxo de Trabalho em 6 Fases
@@ -57,7 +57,7 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
   1. **Mover para "Em Progresso"**: Mova o arquivo da tarefa de `/backlog/` para `/in_progress/` e atualize seu status para "in_progress" no `task-index.md`. Realize um commit para registrar o início do trabalho.
   2. **Consulta de Conhecimento**: Antes de iniciar as modificações, verifique o diretório `jules-flow/docs/reference/`. Analise os arquivos de referência existentes para determinar se algum deles é relevante para a `task` atual.
   3. **Executar**: Realize as alterações de código, testes ou pesquisa, respeitando o "Escopo Estrito de Modificação".
-  4. **Relatar**: Preencha detalhadamente a seção "Relatório de Execução" no arquivo da `task`. Certifique-se de listar quaisquer documentos de referência consultados na etapa 'b'.
+  4. **Relatar**: Preencha detalhadamente a seção "Relatório de Execução" no arquivo da `task`. Certifique-se de listar quaisquer documentos de referência consultados na etapa '2' (Consulta de Conhecimento).
   5. **Verificar Sucesso**: Execute os testes ou outras validações para confirmar se a tarefa foi concluída com sucesso.
   6. **Em caso de Sucesso**:
      1.  Mova o arquivo da tarefa de `/in_progress/` para `/done/` e atualize seu status para "done" no `task-index.md`.
@@ -72,7 +72,7 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
     1.  Verifique se os diretórios `/backlog/`, `/in_progress/` e `/failed/` estão vazios.
     2.  Compile um relatório final (`final-report-YYYYMMDDHHMMSS.md`) a partir das seções "Relatório de Execução" de todas as tarefas em `/done/`.
     3.  Salve o relatório em `jules-flow/final-reports/`.
-    4.  Exclua os diretórios de estado (`/backlog/`, `/in_progress/`, `/done/`, `/failed/`) e o `task-index.md`.
+    4.  Exclua os diretórios de estado (`/backlog/`, `/in_progress/`, `/done/`, `/failed/`). Limpe o conteúdo do arquivo `task-index.md`, preservando o arquivo em si e o cabeçalho da tabela para o próximo ciclo de trabalho.
 
 #### Fase 5: Atualização da Documentação do Projeto
 
