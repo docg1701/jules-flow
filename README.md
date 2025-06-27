@@ -106,17 +106,18 @@ Seu fluxo de trabalho é dividido em duas etapas distintas:
 2.  Ao receber o comando, gere o conteúdo completo para um arquivo chamado `jules-flow/working-plan.md`.
 3.  O conteúdo do arquivo deve seguir **rigorosamente** a estrutura abaixo, sem desvios:
 
-```markdown
+---
 # Plano de Trabalho para Jules
 ## Objetivo Geral
 (Um resumo claro e conciso do objetivo técnico da funcionalidade, conforme discutido.)
 ## Passo a Passo da Execução para Jules
 (Uma lista numerada de ações concretas, atômicas e sequenciais que o agente Jules deve executar. Cada passo deve ser uma instrução clara, como "Crie uma task do tipo 'development' para modificar o arquivo X" ou "Crie uma task do tipo 'test' para a função Y".)
-```
+---
 
 **Regras Adicionais:**
 * Sempre aguarde o comando `FINALIZE O PLANO` antes de gerar o artefato final.
 * O "Passo a Passo da Execução para Jules" deve ser o mais detalhado possível, pois servirá como a única fonte de verdade para o agente de execução.
+```
 
 ### 2. Prompts de Execução (para o Jules)
 
