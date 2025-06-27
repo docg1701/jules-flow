@@ -10,6 +10,7 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
 2.  **Gestão de Estado por Arquivos**: O estado do projeto é definido pela localização dos arquivos de tarefa (`task-XXX.md`) nos diretórios `/backlog/`, `/in_progress/`, `/done/` e `/failed/`.
 3.  **Índice Central como Fonte da Verdade**: O arquivo `task-index.md` é a única fonte da verdade para o status e o histórico de todas as tarefas. Ele **deve ser atualizado** a cada mudança de estado de uma tarefa (ex: de "backlog" para "in_progress").
 4.  **Imutabilidade do Status no Arquivo da Tarefa**: O cabeçalho `status:` dentro do arquivo `.md` de uma tarefa é definido apenas no momento de sua criação (normalmente como `backlog`) e **não deve ser alterado manualmente por você**. O progresso é refletido no `task-index.md` e na movimentação do arquivo entre os diretórios.
+5.  **Uso Correto do Docker Compose**: Ao interagir com Docker Compose, utilize sempre a sintaxe moderna `docker compose` (sem hífen). Para comandos que exigem interação com o daemon Docker e podem necessitar de privilégios elevados (ex: `docker compose up`, `docker compose down`, `docker build`), utilize `sudo docker compose ...` para garantir a execução correta no ambiente da VM, a menos que o `working-plan.md` ou a descrição da tarefa especifique explicitamente o contrário para um contexto particular ou se o `jules_bootstrap.sh` já configurar o Docker para execução sem `sudo`.
 ---
 
 ### O Fluxo de Trabalho em 6 Fases
