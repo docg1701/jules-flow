@@ -5,86 +5,64 @@
 
 Jules-Flow é um sistema de gerenciamento de microtarefas projetado para ser operado pelo agente de IA, Jules, sob a supervisão de um Desenvolvedor humano. O sistema é inteiramente baseado em arquivos Markdown e visa estruturar e rastrear o trabalho de desenvolvimento realizado por Jules de forma transparente, documentada e com alta qualidade.
 
-## Integração e Gerenciamento com Git
+## Adicionando o Jules-Flow ao seu Projeto
 
-Para garantir um gerenciamento de dependências limpo e eficiente, a integração do Jules-Flow ao seu projeto deve ser feita utilizando **Git Submodules**. Este método vincula o repositório do Jules-Flow ao seu projeto de forma que o Git os reconheça como entidades separadas, facilitando atualizações e colaboração.
+Siga estes passos para realizar uma cópia "dura" do sistema para dentro do seu repositório.
 
-### 1. Adicionando o Jules-Flow ao seu Projeto
+**Passo 1: Clonar o Repositório de Referência**
 
-Este é o primeiro passo para integrar o sistema. Ele deve ser executado uma única vez na raiz do repositório do seu projeto.
-
-1.  **Adicione o Submódulo**: Execute o comando abaixo, substituindo a URL pelo endereço do seu repositório `jules-flow`.
-    ```bash
-    git submodule add https://github.com/docg1701/jules-flow.git jules-flow
-    ```
-    * Este comando clona o repositório `jules-flow` para um diretório de mesmo nome e cria um arquivo `.gitmodules` para rastrear o vínculo.
-
-2.  **Comite a Integração**: Registre a adição do submódulo no seu projeto principal.
-    ```bash
-    git add jules-flow .gitmodules
-    git commit -m "feat: Integra o sistema Jules-Flow como submódulo"
-    ```
-
-### 2. Clonando um Projeto que já usa o Jules-Flow
-
-Quando um novo desenvolvedor (ou você mesmo, em outra máquina) for clonar um projeto que já contém o submódulo, um passo extra é necessário para inicializar e baixar o conteúdo do `jules-flow`.
-
-* **Opção A (Recomendada): Clonar o repositório e o submódulo de uma só vez.**
-    ```bash
-    git clone --recurse-submodules https://github.com/docg1701/jules-flow.git
-    ```
-
-* **Opção B: Se você já clonou o projeto sem o submódulo.**
-    ```bash
-    # Inicializa os submódulos locais
-    git submodule init
-
-    # Baixa as alterações do repositório do submódulo
-    git submodule update
-    ```
-
-### 3. Atualizando o Jules-Flow
-
-Para buscar a versão mais recente do `jules-flow` (após correções ou novas funcionalidades serem adicionadas a ele), siga estes passos:
-
-1.  **Navegue até o diretório do submódulo e puxe as alterações.**
-    ```bash
-    cd jules-flow
-    git pull origin main
-    ```
-
-2.  **Volte ao projeto principal e comite a atualização.** O Git registrará que o submódulo foi atualizado para uma nova versão (um novo commit).
-    ```bash
-    cd ..
-    git add jules-flow
-    git commit -m "chore: Atualiza o submódulo Jules-Flow para a versão mais recente"
-    ```
-
-### 4. Removendo o Jules-Flow do Projeto
-
-Se precisar desintegrar o sistema, o processo é o seguinte:
-
-1.  **Desinicialize e remova o submódulo.**
-    ```bash
-    # Desinicializa o submódulo, removendo a entrada do .git/config
-    git submodule deinit -f jules-flow
-
-    # Remove o diretório do submódulo e seus registros no git
-    git rm -f jules-flow
-    ```
-
-2.  **Remova os metadados restantes.** Exclua o diretório `.git/modules/jules-flow` se ele ainda existir.
-
-3.  **Comite a remoção.**
-    ```bash
-    git commit -m "refactor: Remove a integração com o Jules-Flow"
-    ```
-
-### 5. Enviando Alterações para o Repositório Remoto (Push)
-
-Após realizar qualquer uma das operações acima (adicionar, atualizar ou remover o submódulo) e comitá-las, o envio para o repositório remoto (`origin`) funciona como de costume:
+Primeiro, clone o repositório oficial do `jules-flow` em um diretório de desenvolvimento geral (fora do seu projeto), como `~/dev`.
 
 ```bash
+# Navegue até seu diretório de desenvolvimento
+cd ~/dev
+
+# Clone o repositório
+git clone https://github.com/docg1701/jules-flow.git
+```
+
+**Passo 2: Copiar os Arquivos para o seu Projeto**
+
+Agora, copie os arquivos do clone de referência para um diretório `jules-flow` dentro da raiz do seu projeto.
+
+```bash
+# Navegue para a raiz do seu projeto (ex: ~/dev/meu-projeto)
+cd ~/dev/meu-projeto
+
+# Crie o diretório jules-flow e copie o conteúdo para ele
+mkdir -p jules-flow
+cp -r ~/dev/jules-flow/* jules-flow/
+
+# É crucial remover o histórico git do jules-flow
+rm -rf jules-flow/.git
+```
+**Passo 3: Registrar os Arquivos no seu Projeto**
+
+Finalmente, adicione os novos arquivos ao controle de versão do seu projeto.
+
+```bash
+git add jules-flow/
+git commit -m "feat: Adiciona o sistema Jules-Flow diretamente ao projeto"
+git push
+```
+
+## Removendo o Jules-Flow do Projeto
+
+### Como Remover o Jules-Flow
+
+Para remover completamente o Jules-Flow do seu projeto, use o comando abaixo.
+
+**Comando de Remoção:**
+
+Execute este comando na raiz do seu projeto para remover o diretório e registrar a exclusão.
+
+```bash
+# Remove o diretório e todo o seu conteúdo
+rm -rf jules-flow/
+
+# Adiciona a remoção ao controle de versão e faz o commit
+git add .
+git commit -m "refactor: Remove a integração com o Jules-Flow"
 git push
 ```
 
