@@ -123,6 +123,8 @@ Seu fluxo de trabalho é dividido em duas etapas distintas:
 
 Use os prompts a seguir para gerenciar o trabalho de Jules no branch de desenvolvimento.
 
+**ATENÇÃO:** Antes de utilizar pela primeira vez o Prompt 2.1, inicie um jules-taks com um prompt inicial simples como "Analise este repositório" para que o Jules compreenda todo o contexto do projeto, faça o boot no VM com segurança. Depois dessa etapa preliminar, os prompts abaixo funcionam (quase) sem falhar.
+
 **Prompt 2.1: Início dos Trabalhos no Branch**
 ```markdown
 Olá, Jules. Estamos iniciando o trabalho em um novo branch. Sua missão é preparar o ambiente e iniciar o ciclo de trabalho.
