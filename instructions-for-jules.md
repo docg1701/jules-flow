@@ -6,7 +6,7 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
 
 ### Princípios Fundamentais
 
-1.  **Comunicação via Commits**: Cada passo significativo que você toma deve ser registrado através de um commit atômico e bem descrito.
+1.  **Comunicação e Versionamento de Etapas Significativas**: Cada passo significativo que você toma deve ser claramente documentado e versionado. As alterações serão agrupadas e submetidas em um commit final para o branch ao concluir o plano de trabalho aprovado.
 2.  **Gestão de Estado por Arquivos**: O estado do projeto é definido pela localização dos arquivos de tarefa (`task-XXX.md`) nos diretórios `/backlog/`, `/in_progress/`, `/done/` e `/failed/`.
 3.  **Índice Central como Fonte da Verdade**: O arquivo `task-index.md` é a única fonte da verdade para o status e o histórico de todas as tarefas. Ele **deve ser atualizado** a cada mudança de estado de uma tarefa (ex: de "backlog" para "in_progress").
 4.  **Escopo Estrito de Modificação**: Você está estritamente proibido de alterar, mover ou excluir qualquer arquivo que não esteja explicitamente listado na seção "Arquivos Relevantes" da `task` ativa.
@@ -53,7 +53,7 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
 * **Objetivo**: Executar as tarefas de forma ordenada e segura.
 * **Ação**: Siga o ciclo de execução para cada tarefa, uma de cada vez.
 * **Ciclo de Execução da Tarefa**:
-  1. **Mover para "Em Progresso"**: Mova o arquivo da tarefa de `/backlog/` para `/in_progress/` e atualize seu status para "in_progress" no `task-index.md`. Realize um commit para registrar o início do trabalho.
+  1. **Mover para "Em Progresso"**: Mova o arquivo da tarefa de `/backlog/` para `/in_progress/` e atualize seu status para "in_progress" no `task-index.md`. Este passo marca o início formal do trabalho na tarefa.
   2. **Consulta de Conhecimento**: Antes de iniciar as modificações, verifique o diretório `jules-flow/docs/reference/`. Analise os arquivos de referência existentes para determinar se algum deles é relevante para a `task` atual.
   3. **Executar**: Realize as alterações de código, testes ou pesquisa, respeitando o "Escopo Estrito de Modificação".
   4. **Relatar**: Preencha detalhadamente a seção "Relatório de Execução" no arquivo da `task`. Certifique-se de listar quaisquer documentos de referência consultados no **"Passo 2"** (Consulta de Conhecimento).
@@ -62,7 +62,7 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
      1.  Mova o arquivo da tarefa de `/in_progress/` para `/done/` e atualize seu status para "done" no `task-index.md`.
      2.  **Geração Automática de Tarefa de Teste**: Se a tarefa concluída for do tipo `development`, crie automaticamente uma nova tarefa do tipo `test`. O título deve ser "Testes para a task-XXX", onde XXX é o ID da tarefa de desenvolvimento. Na descrição, detalhe que o objetivo é validar a funcionalidade recém-implementada. Coloque esta nova tarefa no diretório `/backlog/` e adicione-a ao `task-index.md`.
   7.  **Em caso de Falha**: Mova o arquivo da tarefa de `/in_progress/` para `/failed/`, atualize seu status para "failed" no `task-index.md`, e preencha o "Relatório de Execução" com os logs de erro relevantes. Anuncie a falha e pare todo o trabalho subsequente.
-  8.  **Commit Atômico Final**: Realize o commit atômico referente à conclusão (sucesso ou falha) desta `task`.
+  8.  **Registro de Conclusão da Tarefa**: Documente o resultado da tarefa. Todas as alterações de tarefas concluídas com sucesso serão incluídas no commit final do branch, criado ao submeter o plano de trabalho completo usando a ferramenta `submit`.
   
 #### Fase 4: Geração de Relatório e Finalização
 
