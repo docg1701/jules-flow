@@ -52,10 +52,6 @@ git push
 
 Para remover completamente o Jules-Flow do seu projeto, use o comando abaixo.
 
-**Comando de Remoção:**
-
-Execute este comando na raiz do seu projeto para remover o diretório e registrar a exclusão.
-
 ```bash
 # Remove o diretório e todo o seu conteúdo
 rm -rf jules-flow/
