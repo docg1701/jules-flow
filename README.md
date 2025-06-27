@@ -136,14 +136,14 @@ Use este comando para instruir Jules a executar as tarefas pendentes. Ele possui
 
 *Para executar apenas a próxima tarefa disponível:*
 ```markdown
-Olá, Jules. É hora de retomar seu trabalho neste branch.
+Olá, Jules. É hora de retomar seu trabalho em um novo branch.
 
 Execute a **Fase 3** do arquivo `jules-flow/instructions-for-jules.md` para processar a próxima tarefa disponível no backlog.
 ```
 
 *Para executar um lote de tarefas (ex: 3 tarefas em sequência):*
 ```markdown
-Olá, Jules. É hora de retomar seu trabalho neste branch.
+Olá, Jules. É hora de retomar seu trabalho em um novo branch.
 
 Execute a **Fase 3** do arquivo `jules-flow/instructions-for-jules.md` **3 vezes em sequência**, processando um lote de tarefas do backlog sem pausas entre elas.
 ```
@@ -153,7 +153,7 @@ Execute a **Fase 3** do arquivo `jules-flow/instructions-for-jules.md` **3 vezes
 Use este prompt após todas as tarefas terem sido concluídas com sucesso.
 
 ```markdown
-Olá, Jules. O trabalho de desenvolvimento neste branch foi concluído.
+Olá, Jules. O trabalho de desenvolvimento foi concluído.
 
 Execute a **Fase 4** do arquivo `jules-flow/instructions-for-jules.md` para gerar o relatório final e limpar o ambiente de trabalho.
 ```
@@ -178,7 +178,7 @@ Execute a **Fase 5** do arquivo `jules-flow/instructions-for-jules.md`, utilizan
 Use este prompt para iniciar uma revisão de qualidade do código gerado.
 
 ```markdown
-Olá, Jules. O desenvolvimento principal neste branch foi concluído.
+Olá, Jules. O trabalho de desenvolvimento foi concluído.
 
 Execute a **Fase 6** do arquivo `jules-flow/instructions-for-jules.md` para realizar uma revisão de qualidade no código produzido e identificar possíveis melhorias.
 ```
@@ -190,7 +190,7 @@ Use este prompt quando uma tarefa falhar e o trabalho for bloqueado.
 ```markdown
 Olá, Jules. Identificamos que a tarefa `task-XXX` falhou.
 
-Siga o procedimento de tratamento de falhas descrito na **Fase 3 (passo 7)** do arquivo `jules-flow/instructions-for-jules.md` para analisar o problema e criar uma nova tarefa de correção.
+Siga o procedimento de tratamento de falhas descrito na **Fase 3 (passo 7)** do arquivo `jules-flow/instructions-for-jules.md` para analisar o problema. Em seguida, crie uma nova task de correção.
 ```
 
 ## Estrutura de Diretórios
@@ -200,7 +200,7 @@ Siga o procedimento de tratamento de falhas descrito na **Fase 3 (passo 7)** do 
     * `/in_progress/`: Contém a tarefa que está sendo executada no momento.
     * `/done/`: Contém tarefas concluídas com sucesso.
     * `/failed/`: Contém tarefas que falharam durante a execução.
-    * `/final-reports/`: Contém os relatórios finais consolidados de cada branch de trabalho.
+    * `/final-reports/`: Contém os relatórios finais consolidados de cada etapa de trabalho.
     * `/docs/`: Contém documentação gerada pelo Jules-Flow.
         * `/reference/`: Arquivos de referência criados durante a fase de pesquisa.
     * `/templates/`: Contém o modelo `task-template.md` para novas tarefas.
