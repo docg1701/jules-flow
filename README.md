@@ -64,21 +64,7 @@ git push
 
 ## O Fluxo de Trabalho Orientado a Tarefas
 
-O trabalho com Jules é organizado em um ciclo de vida dinâmico para cada nova funcionalidade, que ocorre em seu próprio branch (`jules-<timestamp>`). O processo é guiado por um plano mestre e executado através de tarefas atômicas que gerenciam seu próprio estado.
-
-### Fase 0: Renomear o branch de trabalho do Jules para manter a consistência
-```bash
-# 1. Sincroniza o repositório local com o remoto para obter a lista de branches mais recente
-git pull
-# 2. Muda para o branch a ser renomeado, criando uma cópia local a partir do remoto
-git checkout feature/jules-setup
-# 3. Renomeia o branch que agora está ativo localmente, usando o timestamp extraído do working-plan.md
-git branch -m jules-20250627135500
-# 4. Envia o branch com o novo nome para o GitHub e define o rastreamento
-git push -u origin jules-20250627135500
-# 5. Deleta o branch com o nome antigo do repositório remoto (GitHub)
-git push origin --delete feature/jules-setup
-```
+O trabalho com Jules é organizado em um ciclo de vida dinâmico para cada nova funcionalidade, que ocorre em seu próprio branc. O processo é guiado por um plano mestre e executado através de tarefas atômicas que gerenciam seu próprio estado.
 
 ### Fase 1: Planejamento (Humano + Gemini)
 
@@ -120,24 +106,17 @@ Seu fluxo de trabalho é dividido em duas etapas distintas:
 2.  Ao receber o comando, gere o conteúdo completo para um arquivo chamado `jules-flow/working-plan.md`.
 3.  O conteúdo do arquivo deve seguir **rigorosamente** a estrutura abaixo, sem desvios:
 
----
-`# Plano de Trabalho - Branch: jules-YYYYMMDDHHMMSS`
-
-`(O timestamp no formato ano-mês-dia-hora-minuto-segundo DEVE ser gerado por você.)`
-
-`## Objetivo Geral`
-
-`(Um resumo claro e conciso do objetivo técnico da funcionalidade, conforme discutido.)`
-
-`## Passo a Passo da Execução para Jules`
-
-`(Uma lista numerada de ações concretas, atômicas e sequenciais que o agente Jules deve executar. Cada passo deve ser uma instrução clara, como "Crie uma task do tipo 'development' para modificar o arquivo X" ou "Crie uma task do tipo 'test' para a função Y".)`
----
+```markdown
+# Plano de Trabalho para Jules
+## Objetivo Geral
+(Um resumo claro e conciso do objetivo técnico da funcionalidade, conforme discutido.)
+## Passo a Passo da Execução para Jules
+(Uma lista numerada de ações concretas, atômicas e sequenciais que o agente Jules deve executar. Cada passo deve ser uma instrução clara, como "Crie uma task do tipo 'development' para modificar o arquivo X" ou "Crie uma task do tipo 'test' para a função Y".)
+```
 
 **Regras Adicionais:**
 * Sempre aguarde o comando `FINALIZE O PLANO` antes de gerar o artefato final.
 * O "Passo a Passo da Execução para Jules" deve ser o mais detalhado possível, pois servirá como a única fonte de verdade para o agente de execução.
-```
 
 ### 2. Prompts de Execução (para o Jules)
 
@@ -210,7 +189,7 @@ Use este prompt quando uma tarefa falhar e o trabalho for bloqueado.
 ```markdown
 Olá, Jules. Identificamos que a tarefa `task-XXX` falhou.
 
-Siga o procedimento de tratamento de falhas descrito na **Fase 3 (passo g)** do arquivo `jules-flow/instructions-for-jules.md` para analisar o problema e criar uma nova tarefa de correção.
+Siga o procedimento de tratamento de falhas descrito na **Fase 3 (passo 7)** do arquivo `jules-flow/instructions-for-jules.md` para analisar o problema e criar uma nova tarefa de correção.
 ```
 
 ## Estrutura de Diretórios
