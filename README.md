@@ -148,7 +148,7 @@ Seu fluxo de trabalho é dividido em duas etapas distintas:
 
 Use os prompts a seguir para gerenciar o trabalho de Jules no branch de desenvolvimento.
 
-**ATENÇÃO:** Antes de utilizar pela primeira vez o Prompt 2.1, inicie um jules-taks com um prompt inicial simples como "Analise este repositório" para que o Jules compreenda todo o contexto do projeto, faça o boot no VM com segurança. Depois dessa etapa preliminar, os prompts abaixo funcionam (quase) sem falhar.
+**ATENÇÃO:** Para a primeira interação com Jules em um novo clone ou ambiente de VM, recomenda-se um prompt inicial como 'Analise este repositório e o sistema Jules-Flow.' Isso permite que Jules carregue o contexto do projeto e da VM adequadamente antes de executar as fases de trabalho do Jules-Flow. Após esta inicialização, os prompts subsequentes tendem a ter maior taxa de sucesso.
 
 **Prompt 2.1: Início dos Trabalhos no Branch**
 ```markdown
@@ -214,6 +214,16 @@ Use este prompt quando uma tarefa falhar e o trabalho for bloqueado.
 Olá, Jules. Identificamos que a tarefa `task-XXX` falhou.
 
 Siga o procedimento de tratamento de falhas descrito na **Fase 3 (passo 7)** do arquivo `jules-flow/instructions-for-jules.md` para analisar o problema. Em seguida, crie uma nova task de correção.
+```
+
+**Prompt 2.7 (Opcional): Iniciar Reavaliação do Plano de Trabalho**
+
+Use este prompt se você, Desenvolvedor, identificar a necessidade de alterar o `working-plan.md` antes que Jules o faça.
+
+```markdown
+Olá, Jules. Identifiquei a necessidade de reavaliar e possivelmente alterar o `working-plan.md` atual.
+
+Por favor, inicie o "Processo Especial: Adaptação de Plano em Execução" conforme descrito em `jules-flow/instructions-for-jules.md`. Pause qualquer tarefa em progresso, crie a task `replan` com suas observações sobre o estado atual do plano (se houver) e aguarde a atualização do `working-plan.md` e minhas instruções para prosseguir.
 ```
 
 ## Estrutura de Diretórios
