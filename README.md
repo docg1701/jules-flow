@@ -66,6 +66,33 @@ git push
 
 O trabalho com Jules é organizado em um ciclo de vida dinâmico para cada nova funcionalidade, que ocorre em seu próprio branch (`jules-<timestamp>`). O processo é guiado por um plano mestre e executado através de tarefas atômicas que gerenciam seu próprio estado.
 
+### Fase 0: Renomear o branch de trabalho do Jules para manter a consistência
+
+1. Sincroniza o repositório local com o remoto para obter a lista de branches mais recente
+```markdown
+git pull
+```
+
+2. Muda para o branch correto, criando uma cópia local a partir do remoto
+```markdown
+git checkout feature/jules-setup
+```
+
+3. Renomeia o branch que agora está ativo localmente
+```markdown
+git branch -m jules-20250627135500
+```
+
+4. Envia o branch com o novo nome para o GitHub e define o rastreamento
+```markdown
+git push -u origin jules-20250627135500
+```
+
+5. Deleta o branch com o nome antigo do repositório remoto (GitHub)
+```markdown
+git push origin --delete feature/jules-setup
+```
+
 ### Fase 1: Planejamento (Humano + Gemini)
 
 O desenvolvedor humano, atuando como arquiteto, colabora com o Gemini para analisar o código e discutir a implementação. Esta fase culmina na geração de um arquivo `jules-flow/working-plan.md`, que contém o roteiro detalhado para o agente Jules.
