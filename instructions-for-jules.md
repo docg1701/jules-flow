@@ -27,10 +27,9 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
     	| ID da Tarefa | Título | Tipo | Status | Prioridade | Dependências | Atribuído |
     	|--------------|--------|------|--------|------------|--------------|-----------|
     	```
-    3.  **Commit de Preparação**: Execute um commit com a mensagem "Setup: Limpeza do ambiente de trabalho concluída.".
-    4.  **Análise do Plano**: Leia o `working-plan.md`. Identifique as áreas que exigem pesquisa de documentação.
-    5.  **Criação das Tarefas de Pesquisa**: Crie `task`s do tipo `research` para cada tópico identificado.
-    6.  **Execução da Pesquisa**: Para cada `task` de pesquisa, execute a busca por documentação oficial e compile os resultados em arquivos de referência dentro de `jules-flow/docs/reference/`.
+    3.  **Análise do Plano**: Leia o `working-plan.md`. Identifique as áreas que exigem pesquisa de documentação.
+    4.  **Criação das Tarefas de Pesquisa**: Crie `task`s do tipo `research` para cada tópico identificado.
+    5.  **Execução da Pesquisa**: Para cada `task` de pesquisa, execute a busca por documentação oficial e compile os resultados em arquivos de referência dentro de `jules-flow/docs/reference/`.
 
 #### Fase 2: Preparação e Decomposição do Plano
 
