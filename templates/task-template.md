@@ -1,10 +1,11 @@
 ---
 id: task-XXX
 title: "Título da Tarefa"
-type: development | test | research | documentation | fix | refactor
-status: backlog
+type: development | test | research | documentation | fix | refactor # Tipos de tarefa padrão
+status: backlog # Status inicial no arquivo da task. Status real é gerenciado no task-index.md e pode incluir: backlog | in_progress | done | failed | paused_environment | paused_research | paused_replan
 priority: medium # (Valores: high | medium | low. Default: medium)
 dependencies: [] # Lista de IDs de tarefas das quais esta depende, ex: ["task-001", "task-002"]
+parent_plan_objective_id: "" # Opcional: ID/Número do objetivo no working-plan.md do qual esta task foi derivada
 discovered_research_needed: [] # Lista de IDs de tasks de pesquisa criadas dinamicamente durante a execução desta task
 assigned_to: Jules
 created_by: Jules

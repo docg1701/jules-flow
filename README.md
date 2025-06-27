@@ -64,7 +64,30 @@ git push
 
 ## O Fluxo de Trabalho Orientado a Tarefas
 
-O trabalho com Jules é organizado em um ciclo de vida dinâmico para cada nova funcionalidade, que ocorre em seu próprio branc. O processo é guiado por um plano mestre e executado através de tarefas atômicas que gerenciam seu próprio estado.
+O trabalho com Jules é organizado em um ciclo de vida dinâmico para cada nova funcionalidade, que ocorre em seu próprio branch. O processo é guiado por um plano mestre e executado através de tarefas atômicas que gerenciam seu próprio estado.
+
+### Configuração do Ambiente da VM com `jules_bootstrap.sh`
+
+Para garantir que Jules opere em um ambiente de máquina virtual (VM) com todas as dependências de sistema necessárias para compilar, testar e executar o projeto, o sistema Jules-Flow gerencia um script de bootstrap chamado `jules_bootstrap.sh`.
+
+*   **Localização:** Este script reside (ou será criado por Jules) na raiz do seu repositório: `./jules_bootstrap.sh`.
+*   **Propósito:** Contém comandos shell (primariamente `apt-get install` para sistemas baseados em Debian/Ubuntu) para instalar pacotes de sistema.
+*   **Gerenciamento por Jules:**
+    *   Na Fase 1 de suas operações, Jules analisará os arquivos do projeto (ex: `package.json`, `requirements.txt`, `Dockerfile`) para inferir dependências de sistema e adicioná-las ao `jules_bootstrap.sh`.
+    *   Se, durante a execução de tarefas, Jules detectar a falta de uma dependência de sistema que cause uma falha, ele tentará adicionar o comando de instalação correspondente ao `jules_bootstrap.sh` e o notificará.
+*   **Ação Crítica do Usuário:**
+    *   **Você DEVE configurar a interface do Agente Jules (em jules.google.com) para usar este script `jules_bootstrap.sh` como o "Environment setup script" para o seu repositório.** Isso garantirá que, toda vez que Jules iniciar uma nova sessão de trabalho (e uma nova VM for provisionada), o script será executado, preparando o ambiente corretamente.
+    *   Se Jules atualizar o `jules_bootstrap.sh` devido a uma dependência descoberta, ele o informará. Para que a mudança tenha efeito, você precisará aprovar o commit contendo o `jules_bootstrap.sh` atualizado e, em seguida, instruir Jules a tentar novamente a tarefa pausada (ou reiniciar o fluxo de trabalho). A nova VM será criada com o bootstrap atualizado.
+*   **Conteúdo Inicial (Exemplo):** Se não existir, Jules criará `jules_bootstrap.sh` com um conteúdo base como:
+    ```bash
+    #!/bin/bash
+    # Script de bootstrap para o ambiente de Jules
+    sudo apt-get update
+    # Adicione aqui outros comandos de instalação, ex:
+    # sudo apt-get install -y curl git python3-pip
+    echo "Bootstrap script concluído."
+    ```
+    Jules então adicionará outros comandos `sudo apt-get install -y ...` conforme necessário.
 
 ### Fase 1: Planejamento (Humano + Gemini)
 

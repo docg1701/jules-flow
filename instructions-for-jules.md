@@ -16,19 +16,38 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
 
 #### Fase 1: Descoberta e Pesquisa
 
-* **Objetivo**: Limpar o ambiente de trabalho, identificar o escopo de pesquisa e buscar o conhecimento necessário.
+* **Objetivo**: Limpar o ambiente de trabalho, preparar o script de bootstrap da VM, identificar o escopo de pesquisa e buscar o conhecimento necessário.
 * **Ação**:
-    1.  **Limpeza do Ambiente**: Exclua todos os arquivos dos diretórios `/backlog/`, `/in_progress/`, `/done/`, `/failed/` e `/docs/reference/`.
-    2.  **No arquivo `task-index.md`, preserve apenas o cabeçalho e limpe o restante da tabela**. O cabeçalho esperado é:
+    1.  **Análise Inicial de Dependências e Criação/Atualização do `jules_bootstrap.sh`**:
+        *   Verifique se o arquivo `jules_bootstrap.sh` existe na raiz do projeto. Se não existir, crie-o com o conteúdo inicial:
+            ```bash
+            #!/bin/bash
+            # Script de bootstrap para o ambiente de Jules
+            # Adicione aqui os comandos para instalar dependências de sistema
+
+            # Exemplo:
+            # sudo apt-get update
+            # sudo apt-get install -y curl git python3-pip
+
+            echo "Bootstrap script concluído."
+            ```
+        *   Analise arquivos de manifesto do projeto (como `package.json`, `requirements.txt`, `Gemfile`, `pom.xml`, `build.gradle`, `Makefile`, scripts de CI em `.github/workflows` ou `.gitlab-ci.yml`, `Dockerfile` se presente) para inferir dependências de sistema comuns ou comandos de setup de ambiente. Use `read_files` para ler esses arquivos.
+        *   Use `grep` nesses arquivos para buscar por padrões como `apt-get install`, `yum install`, `apk add`, ou menções a pacotes de sistema conhecidos.
+        *   Para cada dependência de sistema inferida ou comando de setup relevante, adicione o comando de instalação correspondente ao `jules_bootstrap.sh`. Adicione os comandos antes da linha `echo "Bootstrap script concluído."`.
+            *   Adicione comandos de forma a serem idempotentes, se possível (ex: `apt-get install -y` já lida com isso).
+            *   Se o `jules_bootstrap.sh` já contiver comandos similares, evite duplicação desnecessária, mas prefira adicionar se não tiver certeza de que a dependência exata já está coberta.
+        *   Esta etapa deve ser considerada como uma tentativa de "melhor esforço" para preparar o ambiente. Problemas de dependência ainda podem surgir durante a execução das tarefas.
+    2.  **Limpeza do Ambiente de Tarefas**: Exclua todos os arquivos de tarefas (`.md`) dos diretórios `/backlog/`, `/in_progress/`, `/done/`, `/failed/`. Limpe também o conteúdo de `/docs/reference/` (exceto `.gitkeep`).
+    3.  **No arquivo `task-index.md`, preserve apenas o cabeçalho e limpe o restante da tabela**. O cabeçalho esperado é:
     	```markdown
     	# Índice de Tarefas Jules-Flow
 
     	| ID da Tarefa | Título | Tipo | Status | Prioridade | Dependências | Atribuído |
     	|--------------|--------|------|--------|------------|--------------|-----------|
     	```
-    3.  **Análise do Plano**: Leia o `working-plan.md`. Identifique as áreas que exigem pesquisa de documentação.
-    4.  **Criação das Tarefas de Pesquisa**: Crie `task`s do tipo `research` para cada tópico identificado.
-    5.  **Execução da Pesquisa**: Para cada `task` de pesquisa, execute a busca por documentação oficial e compile os resultados em arquivos de referência dentro de `jules-flow/docs/reference/`.
+    4.  **Análise do `working-plan.md` para Pesquisa**: Leia o `working-plan.md`. Identifique as áreas que exigem pesquisa de documentação.
+    5.  **Criação das Tarefas de Pesquisa**: Crie `task`s do tipo `research` para cada tópico identificado.
+    6.  **Execução da Pesquisa**: Para cada `task` de pesquisa, execute a busca por documentação oficial e compile os resultados em arquivos de referência dentro de `docs/reference/`.
 
 #### Fase 2: Preparação e Decomposição do Plano
 
@@ -77,7 +96,23 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
   6. **Em caso de Sucesso**:
      1.  Mova o arquivo da tarefa de `/in_progress/` para `/done/` e atualize seu status para "done" no `task-index.md`.
      2.  **Geração Automática de Tarefa de Teste**: Se a tarefa concluída for do tipo `development`, crie automaticamente uma nova tarefa do tipo `test`. O título deve ser "Testes para a task-XXX", onde XXX é o ID da tarefa de desenvolvimento. Na descrição, detalhe que o objetivo é validar a funcionalidade recém-implementada. Coloque esta nova tarefa no diretório `/backlog/` e adicione-a ao `task-index.md`.
-  7.  **Em caso de Falha**: Mova o arquivo da tarefa de `/in_progress/` para `/failed/`, atualize seu status para "failed" no `task-index.md`, e preencha o "Relatório de Execução" com os logs de erro relevantes. Anuncie a falha e o ID da tarefa que falhou, e pare todo o trabalho subsequente. Se estiver executando um lote de tarefas, a falha de uma tarefa interrompe o processamento do restante do lote.
+  7.  **Em caso de Falha**:
+      *   Analise o log de erro no "Relatório de Execução".
+      *   **Sub-fluxo: Falha por Dependência de Sistema Ausente:** Se a tarefa for do tipo `test` ou `development` (ou qualquer tipo que execute comandos externos) e o log de erro indicar claramente um comando não encontrado ou uma biblioteca de sistema ausente (ex: "comando_X: not found", "error while loading shared libraries: libXYZ.so.0"):
+          1.  Tente identificar o nome do pacote de sistema faltante com base na mensagem de erro.
+          2.  Se um pacote for identificado:
+              a.  Adicione o comando de instalação apropriado (ex: `sudo apt-get install -y nome_do_pacote`) ao final do arquivo `jules_bootstrap.sh` (antes da linha `echo "Bootstrap script concluído."`). Certifique-se de não duplicar comandos se possível.
+              b.  Preencha o "Relatório de Execução" da tarefa atual com os detalhes da falha, o pacote identificado e a ação de atualização do `jules_bootstrap.sh`.
+              c.  Mova o arquivo da tarefa de `/in_progress/` para `/backlog/` (ou mantenha em `/in_progress/` se a ferramenta permitir fácil retentativa após intervenção externa).
+              d.  Atualize o status da tarefa no `task-index.md` para `paused_environment`.
+              e.  Anuncie a falha ao usuário, informando o ID da tarefa, a dependência ausente identificada, que o `jules_bootstrap.sh` foi atualizado, e que **a VM precisa ser reiniciada com o novo script de bootstrap** para que a tarefa possa ser retomada com sucesso. Exemplo: "Atenção: A tarefa `task-ABC` falhou devido à ausência da dependência '[pacote]'. Atualizei `jules_bootstrap.sh` para incluí-la. Por favor, reinicie a sessão de trabalho para que a VM seja provisionada com o bootstrap atualizado, e então a tarefa `task-ABC` (atualmente `paused_environment`) poderá ser re-executada."
+              f.  Pare o trabalho subsequente e aguarde a intervenção do usuário (re-início da sessão/VM).
+          3.  Se nenhum pacote específico puder ser identificado claramente, ou se a falha persistir após uma tentativa de correção de bootstrap, proceda com o fluxo de falha padrão abaixo.
+      *   **Fluxo de Falha Padrão:** Se não for uma falha de dependência de sistema tratável conforme acima, ou se a tentativa de correção de bootstrap não resolver:
+          *   Mova o arquivo da tarefa de `/in_progress/` para `/failed/`.
+          *   Atualize seu status para "failed" no `task-index.md`.
+          *   Preencha o "Relatório de Execução" com os logs de erro relevantes.
+          *   Anuncie a falha e o ID da tarefa que falhou, e pare todo o trabalho subsequente. Se estiver executando um lote de tarefas, a falha de uma tarefa interrompe o processamento do restante do lote.
   8.  **Registro de Conclusão da Tarefa**: Documente o resultado da tarefa. Todas as alterações de tarefas concluídas com sucesso serão incluídas no commit final do branch, criado ao submeter o plano de trabalho completo usando a ferramenta `submit`.
   
 #### Fase 4: Geração de Relatório e Finalização
