@@ -67,29 +67,16 @@ git push
 O trabalho com Jules é organizado em um ciclo de vida dinâmico para cada nova funcionalidade, que ocorre em seu próprio branch (`jules-<timestamp>`). O processo é guiado por um plano mestre e executado através de tarefas atômicas que gerenciam seu próprio estado.
 
 ### Fase 0: Renomear o branch de trabalho do Jules para manter a consistência
-
-1. Sincroniza o repositório local com o remoto para obter a lista de branches mais recente
-```markdown
+```bash
+# 1. Sincroniza o repositório local com o remoto para obter a lista de branches mais recente
 git pull
-```
-
-2. Muda para o branch correto, criando uma cópia local a partir do remoto
-```markdown
+# 2. Muda para o branch a ser renomeado, criando uma cópia local a partir do remoto
 git checkout feature/jules-setup
-```
-
-3. Renomeia o branch que agora está ativo localmente
-```markdown
+# 3. Renomeia o branch que agora está ativo localmente, usando o timestamp extraído do working-plan.md
 git branch -m jules-20250627135500
-```
-
-4. Envia o branch com o novo nome para o GitHub e define o rastreamento
-```markdown
+# 4. Envia o branch com o novo nome para o GitHub e define o rastreamento
 git push -u origin jules-20250627135500
-```
-
-5. Deleta o branch com o nome antigo do repositório remoto (GitHub)
-```markdown
+# 5. Deleta o branch com o nome antigo do repositório remoto (GitHub)
 git push origin --delete feature/jules-setup
 ```
 
