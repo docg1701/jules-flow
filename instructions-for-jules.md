@@ -25,11 +25,11 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
             #!/bin/bash
             # Script de bootstrap para o ambiente de Jules
             # Adicione aqui os comandos para instalar dependências de sistema
-
+            
             # Exemplo:
             # sudo apt-get update
             # sudo apt-get install -y curl git python3-pip
-
+            
             echo "Bootstrap script concluído."
             ```
         *   Analise arquivos de manifesto do projeto (como `package.json`, `requirements.txt`, `Gemfile`, `pom.xml`, `build.gradle`, `Makefile`, scripts de CI em `.github/workflows` ou `.gitlab-ci.yml`, `Dockerfile` se presente) para inferir dependências de sistema comuns ou comandos de setup de ambiente. Use `read_files` para ler esses arquivos.
