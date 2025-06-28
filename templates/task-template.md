@@ -1,34 +1,47 @@
 ---
 id: task-XXX
-title: "Título Curto e Descritivo da Tarefa"
-epic: "Fase X: Nome do Épico do Roadmap"
-type: "development" # Tipos: development, research, test, documentation, review
-status: backlog # Status: backlog, in_progress, done, failed
-priority: medium
-dependencies: []
-assignee: Jules
+title: "Título da Tarefa"
+type: development | test | research | documentation | fix | refactor # Tipos de tarefa padrão
+status: backlog # Status inicial no arquivo da task. Status real é gerenciado no task-index.md e pode incluir: backlog | in_progress | done | failed | paused_environment | paused_research | paused_replan
+priority: medium # (Valores: high | medium | low. Default: medium)
+dependencies: [] # Lista de IDs de tarefas das quais esta depende, ex: ["task-001", "task-002"]
+parent_plan_objective_id: "" # Opcional: ID/Número do objetivo no working-plan.md do qual esta task foi derivada
+discovered_research_needed: [] # Lista de IDs de tasks de pesquisa criadas dinamicamente durante a execução desta task
+assigned_to: Jules
+created_by: Jules
+created_at: YYYY-MM-DDTHH:MM:SSZ
+updated_at: YYYY-MM-DDTHH:MM:SSZ
+tags: []
+description: |
+  Descrição detalhada da tarefa. O que precisa ser feito? Quais são os critérios de aceitação?
+
+# Não modificar esta seção manualmente. Jules irá preenchê-la.
+# ---------------------------------------------------------------
+# RELATÓRIO DE EXECUÇÃO (Preenchido por Jules ao concluir/falhar)
+# ---------------------------------------------------------------
+# outcome: success | failure
+# outcome_reason: "" # (Opcional, em caso de falha)
+# start_time: YYYY-MM-DDTHH:MM:SSZ # (Preenchido preferencialmente pela plataforma de execução, se disponível)
+# end_time: YYYY-MM-DDTHH:MM:SSZ # (Preenchido preferencialmente pela plataforma de execução, se disponível)
+# duration_minutes: 0 # (Preenchido preferencialmente pela plataforma de execução, se disponível)
+# files_modified: # (Preenchido preferencialmente pela plataforma de execução, se disponível)
+#   - caminho/para/arquivo1.ext
+#   - caminho/para/arquivo2.ext
+# reference_documents_consulted: # Documentos de docs/reference/ que foram consultados
+#   - nome_do_documento1.md
+# execution_details: |
+#   Log detalhado do que foi feito, incluindo comandos executados, decisões tomadas,
+#   e quaisquer observações relevantes. Em caso de falha, incluir logs de erro.
+# ---------------------------------------------------------------
 ---
 
-### Descrição
+## Arquivos Relevantes (Escopo da Tarefa)
+* `caminho/para/arquivo_a_ser_modificado.ext`
+* `caminho/para/outro_arquivo_relevante.ext`
 
-(Descrição detalhada do objetivo da tarefa)
+## Critérios de Aceitação
+1. Critério 1.
+2. Critério 2.
 
-### Critérios de Aceitação
-
-- [ ] Critério 1 que define 'pronto'.
-- [ ] Critério 2 que define 'pronto'.
-
-### Arquivos Relevantes
-
-(Esta é uma lista EXCLUSIVA. Você só tem permissão para modificar os arquivos listados aqui.)
-
-* `caminho/para/arquivo1.py`
-
-### Relatório de Execução
-
-(Esta seção deve ser preenchida por Jules ao concluir a tarefa.)
-
-* **Resumo das Alterações**: (Descrição concisa do que foi implementado ou corrigido.)
-* **Documentos de Referência Consultados**: (Listar aqui os arquivos de /docs/reference/ que foram utilizados.)
-* **Resultado**: (Sucesso | Falha)
-* **Observações**: (Detalhes adicionais, como decisões de implementação, desafios encontrados ou logs de erro em caso de falha.)
+## Observações Adicionais
+(Qualquer informação extra que possa ser útil para Jules.)
