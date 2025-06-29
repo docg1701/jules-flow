@@ -64,20 +64,20 @@ git push
 
 ## O Fluxo de Trabalho Orientado a Tarefas
 
-O trabalho com Jules é organizado em um ciclo de vida dinâmico para cada nova funcionalidade, que ocorre em seu próprio branch. O processo é guiado por um plano mestre (`jules-flow/working-plan.md`) e executado através de tarefas atômicas que gerenciam seu próprio estado. Jules opera seguindo uma série de fases, conforme detalhado no `instructions-for-jules.md` e referenciado nos prompts de execução.
+O trabalho com Jules é organizado em um ciclo de vida dinâmico para cada nova funcionalidade, que ocorre em seu próprio branch. O processo é guiado por um plano mestre (`working-plan.md`) e executado através de tarefas atômicas que gerenciam seu próprio estado. Jules opera seguindo uma série de fases, conforme detalhado no `instructions-for-jules.md` e referenciado nos prompts de execução.
 
 ### Artefatos Chave Gerenciados por Jules
 
-Durante suas operações, Jules interage com e gerencia diversos arquivos importantes, tanto dentro da estrutura `jules-flow/` quanto na raiz do seu projeto:
+Durante suas operações, Jules interage com e gerencia diversos arquivos importantes, tanto dentro da estrutura interna do Jules-Flow quanto na raiz do seu projeto:
 
-*   **`AGENTS.md` (na raiz do projeto alvo):** No início de suas operações (Fase 1), Jules garante que um arquivo `AGENTS.md` exista na raiz do seu projeto. Se não houver, ele é copiado de um modelo (`jules-flow/templates/AGENTS.md`). Se já existir, Jules tentará mesclar diretrizes importantes do modelo. Este arquivo fornece instruções e preferências de codificação específicas do projeto para Jules.
+*   **`AGENTS.md` (na raiz do projeto alvo):** No início de suas operações (Fase 1), Jules garante que um arquivo `AGENTS.md` exista na raiz do seu projeto. Se não houver, ele é copiado de um modelo (`templates/AGENTS.md` do sistema Jules-Flow). Se já existir, Jules tentará mesclar diretrizes importantes do modelo. Este arquivo fornece instruções e preferências de codificação específicas do projeto para Jules.
 *   **`VISION.md` (na raiz do projeto alvo):** Durante a Fase 2, Jules cria ou atualiza um arquivo `VISION.md`. Este documento, baseado no `working-plan.md` e na análise do código, serve como uma referência de alto nível para o objetivo do projeto, arquitetura pretendida, principais funcionalidades e tecnologias chave.
 *   **`./jules_bootstrap.sh` (na raiz do projeto alvo):** Script de configuração do ambiente da VM, detalhado abaixo.
-*   **`jules-flow/working-plan.md`:** O plano de trabalho mestre, gerado pelo Desenvolvedor em colaboração com o Gemini, que guia todas as ações de Jules.
-*   **`jules-flow/task-index.md`:** O índice central que rastreia o status e o histórico de todas as tarefas.
-*   **Arquivos de Tarefa (`task-XXX.md`):** Unidades de trabalho individuais localizadas nos diretórios `jules-flow/backlog/`, `jules-flow/in_progress/`, `jules-flow/done/`, e `jules-flow/failed/`.
-*   **`jules-flow/docs/reference/`:** Contém artefatos de pesquisa e documentação técnica consultada ou gerada por Jules.
-*   **`jules-flow/final-reports/`:** Arquiva os relatórios consolidados ao final de um ciclo de trabalho.
+*   **`working-plan.md` (interno ao Jules-Flow):** O plano de trabalho mestre, gerado pelo Desenvolvedor em colaboração com o Gemini, que guia todas as ações de Jules.
+*   **`task-index.md` (interno ao Jules-Flow):** O índice central que rastreia o status e o histórico de todas as tarefas.
+*   **Arquivos de Tarefa (`task-XXX.md`, internos ao Jules-Flow):** Unidades de trabalho individuais localizadas nos diretórios `backlog/`, `in_progress/`, `done/`, e `failed/`.
+*   **`docs/reference/` (interno ao Jules-Flow):** Contém artefatos de pesquisa e documentação técnica consultada ou gerada por Jules.
+*   **`final-reports/` (interno ao Jules-Flow):** Arquiva os relatórios consolidados ao final de um ciclo de trabalho.
 
 ### Configuração do Ambiente da VM com `jules_bootstrap.sh`
 
@@ -102,21 +102,21 @@ Para garantir que Jules opere em um ambiente de máquina virtual (VM) com todas 
 O trabalho de Jules é dividido nas seguintes fases principais, conforme detalhado no `instructions-for-jules.md` e acionado pelos prompts na seção "Guia de Prompts Essenciais":
 
 1.  **Fase de Planejamento (Humano + Gemini):**
-    *   O desenvolvedor humano, atuando como arquiteto, colabora com o Gemini para analisar o código e discutir a implementação. Esta fase culmina na geração do arquivo `jules-flow/working-plan.md`.
+    *   O desenvolvedor humano, atuando como arquiteto, colabora com o Gemini para analisar o código e discutir a implementação. Esta fase culmina na geração do arquivo `working-plan.md` (que será colocado dentro da estrutura do Jules-Flow, por exemplo, na raiz ou em `jules-flow/`).
 
 2.  **Fases de Execução por Jules (acionadas por prompts):**
 
     *   **Fase 1: Descoberta e Pesquisa**
-        *   Jules inicia limpando o ambiente de tarefas. Ele configura o `AGENTS.md` na raiz do seu projeto. Em seguida, analisa o projeto para inferir dependências de sistema, criando ou atualizando o script `./jules_bootstrap.sh`. Finalmente, ele identifica no `working-plan.md` áreas que exigem pesquisa, cria tarefas para isso e armazena os resultados em `jules-flow/docs/reference/`.
+        *   Jules inicia limpando o ambiente de tarefas. Ele configura o `AGENTS.md` na raiz do seu projeto. Em seguida, analisa o projeto para inferir dependências de sistema, criando ou atualizando o script `./jules_bootstrap.sh`. Finalmente, ele identifica no `working-plan.md` áreas que exigem pesquisa, cria tarefas para isso e armazena os resultados em `docs/reference/`.
 
     *   **Fase 2: Preparação e Decomposição do Plano**
-        *   Nesta fase, Jules converte o `jules-flow/working-plan.md` em tarefas executáveis. Uma tarefa importante é a criação/atualização do `VISION.md` na raiz do projeto. As demais etapas do `working-plan.md` são decompostas em tarefas atômicas (ex: `development`, `test`, `documentation`) e registradas no `jules-flow/task-index.md`.
+        *   Nesta fase, Jules converte o `working-plan.md` em tarefas executáveis. Uma tarefa importante é a criação/atualização do `VISION.md` na raiz do projeto. As demais etapas do `working-plan.md` são decompostas em tarefas atômicas (ex: `development`, `test`, `documentation`) e registradas no `task-index.md`.
 
     *   **Fase 3: Execução Inteligente e Dinâmica de Tarefas**
-        *   Jules processa as tarefas do `jules-flow/backlog/` com base em dependências e prioridades. Antes de executar uma tarefa, ele consulta o `VISION.md` e os documentos em `jules-flow/docs/reference/`. Cada tarefa é movida para `jules-flow/in_progress/` e, ao ser concluída, para `jules-flow/done/` (com um relatório de execução detalhado dentro do arquivo da tarefa) ou `jules-flow/failed/`. Tarefas de `development` bem-sucedidas geram automaticamente tarefas de `test`. Falhas podem pausar o fluxo e, em casos de dependências de sistema ausentes, levar à atualização do `jules_bootstrap.sh`.
+        *   Jules processa as tarefas do `backlog/` com base em dependências e prioridades. Antes de executar uma tarefa, ele consulta o `VISION.md` e os documentos em `docs/reference/`. Cada tarefa é movida para `in_progress/` e, ao ser concluída, para `done/` (com um relatório de execução detalhado dentro do arquivo da tarefa) ou `failed/`. Tarefas de `development` bem-sucedidas geram automaticamente tarefas de `test`. Falhas podem pausar o fluxo e, em casos de dependências de sistema ausentes, levar à atualização do `jules_bootstrap.sh`.
 
     *   **Fase 4: Geração de Relatório e Finalização**
-        *   Após todas as tarefas serem concluídas, Jules compila um relatório final (salvo em `jules-flow/final-reports/`) a partir dos detalhes de execução das tarefas concluídas. Os diretórios de trabalho (`backlog`, `in_progress`, `done`, `failed`) e o `task-index.md` são limpos (preservando seu cabeçalho), preparando para o próximo ciclo.
+        *   Após todas as tarefas serem concluídas, Jules compila um relatório final (salvo em `final-reports/`) a partir dos detalhes de execução das tarefas concluídas. Os diretórios de trabalho (`backlog`, `in_progress`, `done`, `failed`) e o `task-index.md` são limpos (preservando seu cabeçalho), preparando para o próximo ciclo.
 
     *   **Fase 5: Atualização da Documentação do Projeto**
         *   Com base no trabalho realizado, Jules identifica os impactos na documentação oficial do projeto, cria tarefas de `documentation` e realiza as atualizações necessárias.
@@ -150,7 +150,7 @@ Seu fluxo de trabalho é dividido em duas etapas distintas:
 
 **Etapa 2: Geração do Plano Formal**
 1.  Esta etapa é acionada **apenas** quando o desenvolvedor fornecer o comando exato: `FINALIZE O PLANO`. Não gere o plano de trabalho antes de receber este comando.
-2.  Ao receber o comando, gere o conteúdo completo para um arquivo chamado `jules-flow/working-plan.md`.
+2.  Ao receber o comando, gere o conteúdo completo para um arquivo chamado `working-plan.md`. (Este arquivo será colocado pelo desenvolvedor dentro da estrutura do Jules-Flow, por exemplo, na raiz ou em `jules-flow/` se o Jules-Flow estiver em um subdiretório do projeto).
 3.  O conteúdo do arquivo deve seguir **rigorosamente** a estrutura abaixo, sem desvios:
 
 ---
@@ -176,7 +176,7 @@ Use os prompts a seguir para gerenciar o trabalho de Jules no branch de desenvol
 ```markdown
 Olá, Jules. Estamos iniciando o trabalho em um novo branch. Sua missão é preparar o ambiente e iniciar o ciclo de trabalho.
 
-Execute as **Fases 1 e 2** do arquivo `jules-flow/instructions-for-jules.md` sequencialmente para colocar o projeto em estado de pronto para a execução das tarefas.
+Execute as **Fases 1 e 2** do arquivo `instructions-for-jules.md` sequencialmente para colocar o projeto em estado de pronto para a execução das tarefas.
 ```
 
 **Prompt 2.2: Continuar Trabalho (Individual ou em Lote)**
@@ -187,16 +187,16 @@ Use este comando para instruir Jules a executar as tarefas pendentes. Ele possui
 ```markdown
 Olá, Jules. É hora de retomar seu trabalho em um novo branch.
 
-Execute a **Fase 3** do arquivo `jules-flow/instructions-for-jules.md` para processar a próxima tarefa disponível no backlog.
+Execute a **Fase 3** do arquivo `instructions-for-jules.md` para processar a próxima tarefa disponível no backlog.
 ```
 
 *Para executar um lote de tarefas (ex: 3 tarefas em sequência):*
 ```markdown
 Olá, Jules. É hora de retomar seu trabalho em um novo branch.
 
-Execute a **Fase 3** do arquivo `jules-flow/instructions-for-jules.md` **3 vezes em sequência**, processando um lote de tarefas do backlog sem pausas entre elas.
+Execute a **Fase 3** do arquivo `instructions-for-jules.md` **3 vezes em sequência**, processando um lote de tarefas do backlog sem pausas entre elas.
 ```
-Nota: Se qualquer tarefa em um lote falhar, Jules pausará toda a execução do lote após finalizar a tarefa que falhou (movendo-a para `/failed/`) e aguardará novas instruções, conforme a Fase 3, Passo 7 do `instructions-for-jules.md`.
+Nota: Se qualquer tarefa em um lote falhar, Jules pausará toda a execução do lote após finalizar a tarefa que falhou (movendo-a para `failed/`) e aguardará novas instruções, conforme a Fase 3, Passo 7 do `instructions-for-jules.md`.
 
 **Prompt 2.3: Finalizar e Limpar o Branch**
 
@@ -205,7 +205,7 @@ Use este prompt após todas as tarefas terem sido concluídas com sucesso.
 ```markdown
 Olá, Jules. O trabalho de desenvolvimento foi concluído.
 
-Execute a **Fase 4** do arquivo `jules-flow/instructions-for-jules.md` para gerar o relatório final e limpar o ambiente de trabalho.
+Execute a **Fase 4** do arquivo `instructions-for-jules.md` para gerar o relatório final e limpar o ambiente de trabalho.
 ```
 
 **Prompt 2.4: Atualizar a documentação**
@@ -225,7 +225,7 @@ Use este prompt para iniciar uma revisão de qualidade do código gerado.
 ```markdown
 Olá, Jules. O trabalho de desenvolvimento foi concluído.
 
-Execute a **Fase 6** do arquivo `jules-flow/instructions-for-jules.md` para realizar uma revisão de qualidade no código produzido e identificar possíveis melhorias.
+Execute a **Fase 6** do arquivo `instructions-for-jules.md` para realizar uma revisão de qualidade no código produzido e identificar possíveis melhorias.
 ```
 
 **Prompt 2.6: Analisar e Corrigir Tarefa com Falha**
@@ -235,7 +235,7 @@ Use este prompt quando uma tarefa falhar e o trabalho for bloqueado.
 ```markdown
 Olá, Jules. Identificamos que a tarefa `task-XXX` falhou.
 
-Siga o procedimento de tratamento de falhas descrito na **Fase 3 (passo 7)** do arquivo `jules-flow/instructions-for-jules.md` para analisar o problema. Em seguida, crie uma nova task de correção.
+Siga o procedimento de tratamento de falhas descrito na **Fase 3 (passo 7)** do arquivo `instructions-for-jules.md` para analisar o problema. Em seguida, crie uma nova task de correção.
 ```
 
 **Prompt 2.7 (Opcional): Iniciar Reavaliação do Plano de Trabalho**
@@ -245,7 +245,7 @@ Use este prompt se você, Desenvolvedor, identificar a necessidade de alterar o 
 ```markdown
 Olá, Jules. Identifiquei a necessidade de reavaliar e possivelmente alterar o `working-plan.md` atual.
 
-Por favor, inicie o "Processo Especial: Adaptação de Plano em Execução" conforme descrito em `jules-flow/instructions-for-jules.md`. Pause qualquer tarefa em progresso, crie a task `replan` com suas observações sobre o estado atual do plano (se houver) e aguarde a atualização do `working-plan.md` e minhas instruções para prosseguir.
+Por favor, inicie o "Processo Especial: Adaptação de Plano em Execução" conforme descrito em `instructions-for-jules.md`. Pause qualquer tarefa em progresso, crie a task `replan` com suas observações sobre o estado atual do plano (se houver) e aguarde a atualização do `working-plan.md` e minhas instruções para prosseguir.
 ```
 
 **Prompt 2.8: Iniciar Modo de Desenvolvimento Conjunto (Co-Dev)**
@@ -255,7 +255,7 @@ Use este prompt para iniciar uma sessão de desenvolvimento colaborativo com Jul
 ```markdown
 Olá, Jules. Gostaria de iniciar o Modo de Desenvolvimento Conjunto (Co-Dev).
 
-Por favor, execute a **Fase 7** do arquivo `jules-flow/instructions-for-jules.md` para preparar o ambiente para o trabalho colaborativo.
+Por favor, execute a **Fase 7** do arquivo `instructions-for-jules.md` para preparar o ambiente para o trabalho colaborativo.
 ```
 
 ### 3. Desenvolvimento Conjunto Humano-Jules (Modo Co-Dev)
@@ -266,7 +266,7 @@ Esta modalidade é projetada para situações que exigem um ciclo de feedback r�
 
 1.  **Iniciação pelo Usuário**: O desenvolvedor humano invoca o Modo Co-Dev usando o "Prompt 2.8".
 2.  **Preparação por Jules**:
-    *   Jules analisa o estado atual do repositório e do sistema `jules-flow`.
+    *   Jules analisa o estado atual do repositório e do sistema Jules-Flow (arquivos como `task-index.md`, estrutura de diretórios `backlog/`, etc.).
     *   Jules anuncia que está pronto para iniciar o Modo Co-Dev.
     *   Jules informa o nome do branch em que está trabalhando (ex: `feature/task-123-xyz`).
     *   Jules fornece ao usuário os comandos `git` necessários para que o usuário sincronize seu ambiente local com o de Jules:
@@ -280,7 +280,7 @@ Esta modalidade é projetada para situações que exigem um ciclo de feedback r�
         git pull origin <nome-do-branch-de-Jules>
         ```
 3.  **Seleção de Tarefa**:
-    *   Jules lista as tarefas que não estão marcadas como `done` no `jules-flow/task-index.md` (ou seja, tarefas com status `backlog`, `in_progress`, `failed`, `paused_replan`, `paused_environment`, `paused_research`).
+    *   Jules lista as tarefas que não estão marcadas como `done` no `task-index.md` (ou seja, tarefas com status `backlog`, `in_progress`, `failed`, `paused_replan`, `paused_environment`, `paused_research`).
     *   O usuário escolhe uma tarefa específica para trabalhar em conjunto.
 4.  **Ciclo Iterativo de Desenvolvimento e Depuração**:
     *   **Ação de Jules**:
@@ -305,18 +305,21 @@ Esta modalidade é projetada para situações que exigem um ciclo de feedback r�
 
 ## Estrutura de Diretórios
 
-* `/jules-flow/`: Diretório raiz do sistema Jules-Flow.
-    * `/backlog/`: Contém tarefas pendentes (arquivos `.md`).
-    * `/in_progress/`: Contém a tarefa que está sendo executada no momento.
-    * `/done/`: Contém tarefas concluídas com sucesso.
-    * `/failed/`: Contém tarefas que falharam durante a execução.
-    * `/final-reports/`: Contém os relatórios finais consolidados de cada etapa de trabalho.
-    * `/docs/reference/`: Contém artefatos de pesquisa e documentação técnica consultada ou gerada por Jules (ex: documentação de APIs, resultados de tasks de `research` da Fase 1).
-    * `/templates/`: Contém modelos para novas tarefas (`task-template.md`) e para o arquivo de diretrizes do agente (`AGENTS.md`).
+* `.` (raiz do repositório Jules-Flow):
     * `README.md`: Este arquivo.
     * `instructions-for-jules.md`: Instruções operacionais para o agente Jules.
     * `task-index.md`: Índice e relatório de progresso de todas as tarefas.
     * `working-plan.md`: O plano de trabalho mestre gerado na fase de planejamento.
+    * `icone-jules-flow.webp`: Ícone do sistema.
+    * `LICENSE`: Arquivo de licença.
+    * `templates/`: Contém modelos para novas tarefas (`task-template.md`) e para o arquivo de diretrizes do agente (`AGENTS.md`).
+    * `backlog/`: Contém tarefas pendentes (arquivos `.md`).
+    * `in_progress/`: Contém a tarefa que está sendo executada no momento.
+    * `done/`: Contém tarefas concluídas com sucesso.
+    * `failed/`: Contém tarefas que falharam durante a execução.
+    * `final-reports/`: Contém os relatórios finais consolidados de cada etapa de trabalho.
+    * `docs/`:
+        * `reference/`: Contém artefatos de pesquisa e documentação técnica consultada ou gerada por Jules (ex: documentação de APIs, resultados de tasks de `research` da Fase 1).
 
 ## Licença
 
