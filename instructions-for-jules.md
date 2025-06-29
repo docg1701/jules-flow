@@ -52,22 +52,30 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
 
 #### Fase 2: Preparação e Decomposição do Plano
 
-* **Objetivo**: Converter o `jules-flow/working-plan.md` em tarefas executáveis.
+* **Objetivo**: Converter o `jules-flow/working-plan.md` em tarefas executáveis, incluindo a geração de uma visão geral do projeto.
 * **Ação**:
     1.  Leia o `jules-flow/working-plan.md` para entender o escopo completo.
-    2.  Decomponha o plano em uma série de `task`s atômicas (como `development`, `test`, `documentation`), utilizando o `jules-flow/templates/task-template.md`. Se os passos do `jules-flow/working-plan.md` (conforme orientação no `README.md` para o Prompt de Planejamento) já representarem objetivos de médio porte, cada um desses passos pode gerar múltiplas tasks (ex: uma `development` para a lógica principal, uma `test` para validá-la, e uma `documentation` se aplicável). Se um passo do `jules-flow/working-plan.md` já for suficientemente atômico para uma única task (ex: 'Criar uma task de `research` para X'), a decomposição pode ser uma tradução direta para uma task.
-    3.  Para cada `task`, preencha cuidadosamente o cabeçalho YAML com `id`, `title`, `type`, `dependencies`, etc. (Se aplicável, preencha o campo `parent_plan_objective_id` com o identificador do objetivo ou passo do `jules-flow/working-plan.md` do qual esta tarefa foi derivada).
-    4.  Salve cada nova `task` no diretório `jules-flow/backlog/` usando `create_file_with_block`.
-    5.  **Verificar Criação Física das Tasks**: Para cada task que você tentou criar no passo anterior, use `ls('jules-flow/backlog/')` e verifique se o arquivo `.md` correspondente à task existe fisicamente. Mantenha uma lista mental ou temporária apenas das tasks cuja criação física foi confirmada. Se alguma task não foi criada, isso será mencionado no anúncio final desta fase (Passo 8).
-    6.  **Garantir o Cabeçalho do Índice**: Antes de popular o `jules-flow/task-index.md`, verifique se ele contém o cabeçalho da tabela. Se o arquivo estiver vazio ou o cabeçalho estiver ausente, escreva a seguinte estrutura no início do arquivo:
+    2.  **Geração da Tarefa `VISION.md`**:
+        *   Crie automaticamente uma nova `task` (ex: `task-VIS`) do tipo `documentation` (ou `vision_generation`) no diretório `jules-flow/backlog/`.
+        *   **Título:** "Gerar/Atualizar VISION.md com base no working-plan.md e análise do código existente".
+        *   **Descrição:** "Analisar o `jules-flow/working-plan.md` atual e, se aplicável, o código existente no repositório (especialmente se for uma atualização e não um projeto do zero). Com base nisso, gerar ou atualizar o arquivo `VISION.md` na raiz do projeto. Este arquivo deve detalhar:\n                *   O objetivo geral do projeto (conforme `working-plan.md`).\n                *   A arquitetura principal pretendida ou existente.\n                *   Uma descrição das principais funcionalidades ou módulos que serão desenvolvidos/afetados, conforme inferido do `working-plan.md`.\n                *   Quaisquer princípios de design ou tecnologias chave mencionadas ou implícitas no `working-plan.md`.\n                *   Os principais fluxos de interação ou dados esperados.\n                O `VISION.md` servirá como um documento de referência de alto nível para guiar o desenvolvimento subsequente."
+        *   **Prioridade:** `high`.
+        *   **Arquivos Relevantes:** `jules-flow/working-plan.md`, `VISION.md` (para criação/atualização na raiz do projeto), e potencialmente os principais diretórios de código fonte para análise contextual (ex: `src/`, `app/`).
+        *   **Critérios de Aceitação:** Um arquivo `VISION.md` é criado/atualizado na raiz do projeto contendo as seções descritas.
+        *   Adicione esta `task-VIS` ao `jules-flow/task-index.md` com status `backlog` e verifique sua criação física em `jules-flow/backlog/`.
+    3.  Decomponha o plano em uma série de `task`s atômicas (como `development`, `test`, `documentation`), utilizando o `jules-flow/templates/task-template.md`. Se os passos do `jules-flow/working-plan.md` (conforme orientação no `README.md` para o Prompt de Planejamento) já representarem objetivos de médio porte, cada um desses passos pode gerar múltiplas tasks (ex: uma `development` para a lógica principal, uma `test` para validá-la, e uma `documentation` se aplicável). Se um passo do `jules-flow/working-plan.md` já for suficientemente atômico para uma única task (ex: 'Criar uma task de `research` para X'), a decomposição pode ser uma tradução direta para uma task.
+    4.  Para cada `task` (excluindo a `task-VIS` já criada), preencha cuidadosamente o cabeçalho YAML com `id`, `title`, `type`, `dependencies`, etc. (Se aplicável, preencha o campo `parent_plan_objective_id` com o identificador do objetivo ou passo do `jules-flow/working-plan.md` do qual esta tarefa foi derivada).
+    5.  Salve cada nova `task` no diretório `jules-flow/backlog/` usando `create_file_with_block`.
+    6.  **Verificar Criação Física das Tasks**: Para cada task que você tentou criar no passo anterior (e incluindo a `task-VIS`), use `ls('jules-flow/backlog/')` e verifique se o arquivo `.md` correspondente à task existe fisicamente. Mantenha uma lista mental ou temporária apenas das tasks cuja criação física foi confirmada. Se alguma task não foi criada, isso será mencionado no anúncio final desta fase (Passo 9).
+    7.  **Garantir o Cabeçalho do Índice**: Antes de popular o `jules-flow/task-index.md`, verifique se ele contém o cabeçalho da tabela. Se o arquivo estiver vazio ou o cabeçalho estiver ausente, escreva a seguinte estrutura no início do arquivo:
         ```markdown
         # Índice de Tarefas Jules-Flow
 
         | ID da Tarefa | Título | Tipo | Status | Prioridade | Dependências | Atribuído |
         |--------------|--------|------|--------|------------|--------------|-----------|
         ```
-    7.  Popule o `jules-flow/task-index.md` com as informações de todas as **tasks confirmadas fisicamente no passo 5 desta fase**, e também com as tarefas de `research` da Fase 1 (cuja criação física também deve ter sido verificada e apenas as confirmadas adicionadas ao índice), garantindo que todas tenham o status inicial "backlog".
-    8.  Ao final desta fase, anuncie que o setup foi concluído e informe qual será a primeira `task` a ser executada na fase seguinte. Se houver discrepâncias na criação de tasks (identificadas no Passo 5), mencione-as claramente ao usuário.
+    8.  Popule o `jules-flow/task-index.md` com as informações de todas as **tasks confirmadas fisicamente no passo 6 desta fase** (incluindo a `task-VIS`), e também com as tarefas de `research` da Fase 1 (cuja criação física também deve ter sido verificada e apenas as confirmadas adicionadas ao índice), garantindo que todas tenham o status inicial "backlog".
+    9.  Ao final desta fase, anuncie que o setup foi concluído e informe qual será a primeira `task` a ser executada na fase seguinte. Se houver discrepâncias na criação de tasks (identificadas no Passo 6), mencione-as claramente ao usuário.
 
 #### Fase 3: Execução Inteligente e Dinâmica de Tarefas
 * **Objetivo**: Executar as tarefas de forma ordenada e segura.
@@ -88,7 +96,7 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
      d.  **Somente se a verificação em (c) for positiva**, delete o arquivo original `jules-flow/backlog/task-XXX.md`. Caso contrário, relate um erro crítico na movimentação e pare, solicitando intervenção do usuário.
      e.  Atualize o status da `task-XXX` para `in_progress` no `jules-flow/task-index.md`.
      f.  Este passo marca o início formal do trabalho na tarefa.
-  2. **Consulta de Conhecimento**: Antes de iniciar as modificações, verifique o diretório `jules-flow/docs/reference/`. Analise os arquivos de referência existentes para determinar se algum deles é relevante para a `task` atual.
+  2. **Consulta de Conhecimento**: Antes de iniciar as modificações, verifique o arquivo `VISION.md` (se existir na raiz do projeto) para obter um entendimento contextual do projeto. Em seguida, verifique o diretório `jules-flow/docs/reference/`. Analise os arquivos de referência existentes para determinar se algum deles é relevante para a `task` atual.
   3. **Executar**: Realize as alterações de código, testes ou pesquisa.
      *   **Princípio do Escopo Estrito de Modificação**: Você está estritamente proibido de alterar, mover ou excluir qualquer arquivo que não esteja explicitamente listado na seção "Arquivos Relevantes" da `task` ativa. Siga este princípio rigorosamente.
      *   **Necessidade de Pesquisa Dinâmica**: Se, durante a execução desta tarefa (especialmente `development` ou `fix`), você identificar a necessidade de uma pesquisa aprofundada que não foi prevista na Fase 1 e que é crucial para o progresso:

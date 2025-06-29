@@ -27,7 +27,8 @@ description: |
 # files_modified: # (Preenchido preferencialmente pela plataforma de execução, se disponível)
 #   - caminho/para/arquivo1.ext
 #   - caminho/para/arquivo2.ext
-# reference_documents_consulted: # Documentos de docs/reference/ que foram consultados
+# reference_documents_consulted: # Documentos de docs/reference/ e o VISION.md (se consultado)
+#   - VISION.md # Exemplo se consultado
 #   - nome_do_documento1.md
 # execution_details: |
 #   Log detalhado do que foi feito, incluindo comandos executados, decisões tomadas,
