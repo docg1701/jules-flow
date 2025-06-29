@@ -13,7 +13,7 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
 5.  **Uso Correto do Docker Compose**: Ao interagir com Docker Compose, utilize sempre a sintaxe moderna `docker compose` (sem hífen). Para comandos que exigem interação com o daemon Docker e podem necessitar de privilégios elevados (ex: `docker compose up`, `docker compose down`, `docker build`), utilize `sudo docker compose ...` para garantir a execução correta no ambiente da VM, a menos que o `working-plan.md` ou a descrição da tarefa especifique explicitamente o contrário para um contexto particular ou se o `jules_bootstrap.sh` já configurar o Docker para execução sem `sudo`.
 ---
 
-### O Fluxo de Trabalho em 6 Fases
+### O Fluxo de Trabalho em 7 Fases
 
 #### Fase 1: Descoberta e Pesquisa
 
@@ -213,3 +213,85 @@ Este processo é acionado por Jules durante a **Fase 3 (Execução Inteligente e
         *   Descartar tarefas antigas do `jules-flow/backlog/` que não são mais relevantes (instruindo Jules a deletá-las e atualizar o índice).
         *   Instruir Jules a executar uma "Fase 2 Parcial" (Preparação e Decomposição do Plano) focada apenas nas seções novas ou alteradas do `jules-flow/working-plan.md` para gerar novas tasks.
         *   Instruir Jules a continuar a Fase 3 com as tarefas novas e existentes.
+
+---
+
+#### Fase 7: Desenvolvimento Conjunto Humano-Jules (Modo Co-Dev)
+
+* **Objetivo**: Facilitar um ciclo de desenvolvimento e depuração altamente interativo entre o desenvolvedor humano e Jules, trabalhando no mesmo branch e com feedback rápido.
+* **Gatilho**: O usuário invoca esta fase através do "Prompt 2.8: Iniciar Modo de Desenvolvimento Conjunto (Co-Dev)".
+* **Ação**:
+
+    1.  **Análise e Preparação Inicial**:
+        *   Anuncie ao usuário: "Iniciando Modo de Desenvolvimento Conjunto (Co-Dev)."
+        *   Realize uma breve análise do estado atual do repositório, incluindo a estrutura do diretório `jules-flow/` e o arquivo `jules-flow/task-index.md`.
+        *   Obtenha o nome do branch Git atual em que você está operando. Você pode precisar usar um comando como `git rev-parse --abbrev-ref HEAD` ou similar através da ferramenta `run_in_bash_session`. Se não for possível obter o nome do branch de forma programática, informe ao usuário e peça que ele forneça o nome do branch.
+        *   Anuncie ao usuário: "Estou pronto para o Modo Co-Dev. Estou trabalhando no branch: `<nome-do-branch>`."
+        *   Instrua o usuário a preparar seu ambiente local com os seguintes comandos, substituindo `<nome-do-branch-de-Jules>` pelo nome do branch real:
+            ```text
+            Por favor, prepare seu ambiente local. Execute os seguintes comandos no seu terminal:
+            1. Certifique-se de que seu repositório local está atualizado com o remoto:
+               git fetch origin
+            2. Faça o checkout do branch em que estou trabalhando:
+               git checkout <nome-do-branch-de-Jules>
+            3. Garanta que seu branch local está sincronizado com o meu último commit (se você já tinha o branch):
+               git pull origin <nome-do-branch-de-Jules>
+            Avise-me quando estiver pronto.
+            ```
+        *   Aguarde a confirmação do usuário de que ele está pronto.
+
+    2.  **Seleção de Tarefa para Trabalho Conjunto**:
+        *   Após a confirmação do usuário, leia o `jules-flow/task-index.md`.
+        *   Liste todas as tarefas que **não** possuem o status `done`. Para cada tarefa, apresente o ID, Título e Status atual.
+        *   Peça ao usuário: "Por favor, escolha o ID da tarefa na qual gostaria de trabalhar em conjunto."
+        *   Aguarde a resposta do usuário com o ID da tarefa. Se o ID fornecido não for válido, informe e peça novamente.
+
+    3.  **Ciclo Iterativo de Desenvolvimento e Depuração da Tarefa Selecionada**:
+        *   Seja `task-CURRENT.md` a tarefa escolhida pelo usuário.
+        *   **Jules: Análise e Modificação**
+            1.  Anuncie: "Ok, vamos trabalhar na tarefa `<ID_da_tarefa_escolhida> - <Título_da_tarefa_escolhida>`."
+            2.  Leia o conteúdo de `task-CURRENT.md` (do seu diretório correspondente: `jules-flow/backlog/`, `jules-flow/in_progress/`, ou `jules-flow/failed/`).
+            3.  Analise os arquivos relevantes listados na tarefa e o objetivo da tarefa.
+            4.  Realize as modificações de código, configuração ou outros arquivos necessários para progredir na tarefa.
+            5.  Prepare uma mensagem para o usuário explicando:
+                *   O que foi modificado.
+                *   Por que foi modificado (racional).
+                *   Uma lista dos arquivos que foram alterados/criados/excluídos.
+            6.  **Commit das Modificações**:
+                *   Use a ferramenta `run_in_bash_session` para adicionar as alterações ao staging do Git (ex: `git add .` ou `git add <arquivo_específico>`).
+                *   Use a ferramenta `run_in_bash_session` para fazer um commit. A mensagem do commit deve ser descritiva, por exemplo: `git commit -m "Co-Dev: Progresso na task <ID_da_tarefa> - <breve descrição das mudanças>"`.
+                *   **Importante**: Este commit é feito no seu ambiente (VM).
+            7.  Envie a mensagem preparada (do passo 3.a.v) ao usuário. Adicione a seguinte instrução: "Fiz o commit das alterações. Por favor, execute `git pull origin <nome-do-branch-de-Jules>` no seu ambiente local para obter as últimas modificações."
+
+        *   **Usuário: Sincronização, Execução e Feedback**
+            1.  Aguarde o usuário confirmar que fez o `git pull` e está pronto para o próximo passo.
+            2.  Instrua o usuário sobre quais comandos ele deve rodar no ambiente local dele para testar/validar as modificações. Seja específico. Por exemplo:
+                *   "Por favor, execute `npm test` e me envie a saída completa do console."
+                *   "Compile o projeto com `mvn clean install` e me informe se houve erros. Se sim, envie o log do erro."
+                *   "Rode a aplicação e tente acessar a funcionalidade X. Descreva o comportamento e envie quaisquer erros do console do navegador ou logs do servidor."
+            3.  Peça ao usuário para enviar o resultado (output de console, logs, descrição do comportamento, etc.).
+            4.  Aguarde o feedback do usuário.
+
+        *   **Jules: Análise do Feedback e Nova Iteração**
+            1.  Analise cuidadosamente o feedback fornecido pelo usuário.
+            2.  Se o feedback indicar que a tarefa foi concluída com sucesso ou o problema foi resolvido:
+                *   Pergunte ao usuário: "Com base no seu feedback, parece que esta parte está funcionando. Você concorda que podemos considerar esta iteração/tarefa como concluída, ou há mais algo a fazer nesta tarefa específica?"
+                *   Se o usuário concordar que a tarefa (ou o objetivo da iteração atual) está concluída:
+                    *   Atualize o status da `task-CURRENT.md` para `done` no `jules-flow/task-index.md` e mova o arquivo para `jules-flow/done/` (se aplicável, conforme o estado original da tarefa).
+                    *   Anuncie: "Ótimo! Marquei a tarefa `<ID_da_tarefa>` como 'done'. Gostaria de selecionar outra tarefa para o Modo Co-Dev, ou podemos finalizar a sessão de Co-Dev?"
+                    *   Se o usuário quiser continuar com outra tarefa, volte para o Passo 2 (Seleção de Tarefa).
+                    *   Se o usuário quiser finalizar, vá para o Passo 4 (Finalização do Modo Co-Dev).
+            3.  Se o feedback indicar problemas, erros ou comportamento inesperado:
+                *   Anuncie: "Entendido. Analisando o problema..."
+                *   Tente identificar a causa raiz do problema com base no feedback.
+                *   Volte para o início do **Passo 3.a (Jules: Análise e Modificação)** para implementar correções. O ciclo se repete.
+
+    4.  **Finalização do Modo Co-Dev**:
+        *   Este passo é alcançado se o usuário indicar que deseja finalizar a sessão de Co-Dev (após concluir uma tarefa ou a qualquer momento).
+        *   Anuncie: "Modo de Desenvolvimento Conjunto (Co-Dev) finalizado. Retornando ao fluxo de trabalho padrão."
+        *   Aguarde novas instruções do usuário (por exemplo, para iniciar outra fase do Jules-Flow).
+
+    **Notas Importantes para o Modo Co-Dev**:
+    *   **Commits Incrementais**: O objetivo é que Jules faça commits pequenos e frequentes no branch compartilhado. A ferramenta `submit` normalmente é usada para finalizar um conjunto maior de trabalho. Se `submit` for a única maneira de Jules criar um commit e "empurrar" para o usuário, o fluxo acima precisará ser ajustado. Idealmente, Jules usaria comandos `git` via `run_in_bash_session` para `add` e `commit` localmente na VM, e o usuário faria `pull` dessas alterações. O "push" do branch de Jules para o `origin` deve ser coordenado ou assumido como parte do ambiente de Jules.
+    *   **Clareza nas Instruções**: É crucial que Jules seja muito claro nas instruções para o usuário (quais comandos rodar, qual feedback enviar).
+    *   **Gerenciamento de Estado da Tarefa**: As tarefas ainda devem seguir o sistema de gerenciamento de estado do Jules-Flow (`task-index.md`, movimentação entre diretórios) na medida do possível, especialmente ao concluir uma tarefa.
