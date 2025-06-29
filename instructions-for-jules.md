@@ -20,9 +20,9 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
 * **Objetivo**: Limpar o ambiente de trabalho, preparar o script de bootstrap da VM, estabelecer diretrizes do agente, identificar o escopo de pesquisa e buscar o conhecimento necessário.
 * **Ação**:
     1.  **Configuração Inicial do `AGENTS.md` do Projeto**:
-        *   Verifique se um arquivo `AGENTS.md` existe na raiz do projeto alvo (`./AGENTS.md`).
+        *   Verifique se um arquivo `AGENTS.md` existe na raiz do projeto atual (`./AGENTS.md`).
         *   Se `./AGENTS.md` não existir:
-            *   Copie o arquivo `jules-flow/templates/AGENTS.md` para `./AGENTS.md` na raiz do projeto alvo.
+            *   Copie o arquivo `jules-flow/templates/AGENTS.md` para `./AGENTS.md` na raiz do projeto atual.
             *   Use `ls()` para confirmar a cópia.
         *   Se `./AGENTS.md` já existir:
             *   Leia o conteúdo de `jules-flow/templates/AGENTS.md` e de `./AGENTS.md`.

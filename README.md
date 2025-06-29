@@ -68,11 +68,11 @@ O trabalho com Jules é organizado em um ciclo de vida dinâmico para cada nova 
 
 ### Artefatos Chave Gerenciados por Jules
 
-Durante suas operações, Jules interage com e gerencia diversos arquivos importantes, tanto dentro da estrutura interna do Jules-Flow quanto na raiz do seu projeto:
+Durante suas operações, Jules interage com e gerencia diversos arquivos importantes, tanto dentro da estrutura interna do Jules-Flow quanto na raiz do projeto atual em que está trabalhando:
 
-*   **`AGENTS.md` (na raiz do projeto alvo):** No início de suas operações (Fase 1), Jules garante que um arquivo `AGENTS.md` exista na raiz do seu projeto. Se não houver, ele é copiado de um modelo (`templates/AGENTS.md` do sistema Jules-Flow). Se já existir, Jules tentará mesclar diretrizes importantes do modelo. Este arquivo fornece instruções e preferências de codificação específicas do projeto para Jules.
-*   **`VISION.md` (na raiz do projeto alvo):** Durante a Fase 2, Jules cria ou atualiza um arquivo `VISION.md`. Este documento, baseado no `working-plan.md` e na análise do código, serve como uma referência de alto nível para o objetivo do projeto, arquitetura pretendida, principais funcionalidades e tecnologias chave.
-*   **`./jules_bootstrap.sh` (na raiz do projeto alvo):** Script de configuração do ambiente da VM, detalhado abaixo.
+*   **`AGENTS.md` (na raiz do projeto atual):** No início de suas operações (Fase 1), Jules garante que um arquivo `AGENTS.md` exista na raiz do projeto atual. Se não houver, ele é copiado de um modelo (`templates/AGENTS.md` do sistema Jules-Flow). Se já existir, Jules tentará mesclar diretrizes importantes do modelo. Este arquivo fornece instruções e preferências de codificação específicas do projeto para Jules.
+*   **`VISION.md` (na raiz do projeto atual):** Durante a Fase 2, Jules cria ou atualiza um arquivo `VISION.md`. Este documento, baseado no `working-plan.md` e na análise do código, serve como uma referência de alto nível para o objetivo do projeto, arquitetura pretendida, principais funcionalidades e tecnologias chave.
+*   **`./jules_bootstrap.sh` (na raiz do projeto atual):** Script de configuração do ambiente da VM, detalhado abaixo.
 *   **`working-plan.md` (interno ao Jules-Flow):** O plano de trabalho mestre, gerado pelo Desenvolvedor em colaboração com o Gemini, que guia todas as ações de Jules.
 *   **`task-index.md` (interno ao Jules-Flow):** O índice central que rastreia o status e o histórico de todas as tarefas.
 *   **Arquivos de Tarefa (`task-XXX.md`, internos ao Jules-Flow):** Unidades de trabalho individuais localizadas nos diretórios `backlog/`, `in_progress/`, `done/`, e `failed/`.
