@@ -17,9 +17,18 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
 
 #### Fase 1: Descoberta e Pesquisa
 
-* **Objetivo**: Limpar o ambiente de trabalho, preparar o script de bootstrap da VM, identificar o escopo de pesquisa e buscar o conhecimento necessário.
+* **Objetivo**: Limpar o ambiente de trabalho, preparar o script de bootstrap da VM, estabelecer diretrizes do agente, identificar o escopo de pesquisa e buscar o conhecimento necessário.
 * **Ação**:
-    1.  **Análise Inicial de Dependências e Criação/Atualização do `jules_bootstrap.sh`**:
+    1.  **Configuração Inicial do `AGENTS.md` do Projeto**:
+        *   Verifique se um arquivo `AGENTS.md` existe na raiz do projeto alvo (`./AGENTS.md`).
+        *   Se `./AGENTS.md` não existir:
+            *   Copie o arquivo `jules-flow/templates/AGENTS.md` para `./AGENTS.md` na raiz do projeto alvo.
+            *   Use `ls()` para confirmar a cópia.
+        *   Se `./AGENTS.md` já existir:
+            *   Leia o conteúdo de `jules-flow/templates/AGENTS.md` e de `./AGENTS.md`.
+            *   Verifique se as diretrizes essenciais do template (especialmente sobre comentários, Docker e versões) já estão cobertas no `AGENTS.md` existente.
+            *   Se houver diretrizes do template ausentes, adicione-as ao `./AGENTS.md` existente, preferencialmente em uma seção apropriada ou ao final do arquivo, evitando duplicações e respeitando o conteúdo preexistente. Indique que estas são diretrizes gerais que podem ser sobrepostas por instruções mais específicas do projeto.
+    2.  **Análise Inicial de Dependências e Criação/Atualização do `jules_bootstrap.sh`**:
         *   Verifique se o arquivo `jules_bootstrap.sh` existe na raiz do projeto. Se não existir, crie-o com o conteúdo inicial:
             ```bash
             #!/bin/bash
@@ -38,17 +47,17 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
             *   Adicione comandos de forma a serem idempotentes, se possível (ex: `apt-get install -y` já lida com isso).
             *   Se o `jules_bootstrap.sh` já contiver comandos similares, evite duplicação desnecessária, mas prefira adicionar se não tiver certeza de que a dependência exata já está coberta.
         *   Esta etapa deve ser considerada como uma tentativa de "melhor esforço" para preparar o ambiente. Problemas de dependência ainda podem surgir durante a execução das tarefas.
-    2.  **Limpeza do Ambiente de Tarefas**: Exclua todos os arquivos de tarefas (`.md`) dos diretórios `jules-flow/backlog/`, `jules-flow/in_progress/`, `jules-flow/done/`, `jules-flow/failed/`. Limpe também o conteúdo de `jules-flow/docs/reference/` (exceto `.gitkeep`).
-    3.  **No arquivo `jules-flow/task-index.md`, preserve apenas o cabeçalho e limpe o restante da tabela**. O cabeçalho esperado é:
+    3.  **Limpeza do Ambiente de Tarefas**: Exclua todos os arquivos de tarefas (`.md`) dos diretórios `jules-flow/backlog/`, `jules-flow/in_progress/`, `jules-flow/done/`, `jules-flow/failed/`. Limpe também o conteúdo de `jules-flow/docs/reference/` (exceto `.gitkeep`).
+    4.  **No arquivo `jules-flow/task-index.md`, preserve apenas o cabeçalho e limpe o restante da tabela**. O cabeçalho esperado é:
     	```markdown
     	# Índice de Tarefas Jules-Flow
 
     	| ID da Tarefa | Título | Tipo | Status | Prioridade | Dependências | Atribuído |
     	|--------------|--------|------|--------|------------|--------------|-----------|
     	```
-    4.  **Análise do `jules-flow/working-plan.md` para Pesquisa**: Leia o `jules-flow/working-plan.md`. Identifique as áreas que exigem pesquisa de documentação.
-    5.  **Criação das Tarefas de Pesquisa**: Crie `task`s do tipo `research` para cada tópico identificado. (Lembre-se de verificar a criação física de cada task de pesquisa em `jules-flow/backlog/` antes de adicioná-las ao `jules-flow/task-index.md`).
-    6.  **Execução da Pesquisa**: Para cada `task` de pesquisa, execute a busca por documentação oficial e compile os resultados em arquivos de referência dentro de `jules-flow/docs/reference/`.
+    5.  **Análise do `jules-flow/working-plan.md` para Pesquisa**: Leia o `jules-flow/working-plan.md`. Identifique as áreas que exigem pesquisa de documentação.
+    6.  **Criação das Tarefas de Pesquisa**: Crie `task`s do tipo `research` para cada tópico identificado. (Lembre-se de verificar a criação física de cada task de pesquisa em `jules-flow/backlog/` antes de adicioná-las ao `jules-flow/task-index.md`).
+    7.  **Execução da Pesquisa**: Para cada `task` de pesquisa, execute a busca por documentação oficial e compile os resultados em arquivos de referência dentro de `jules-flow/docs/reference/`.
 
 #### Fase 2: Preparação e Decomposição do Plano
 
