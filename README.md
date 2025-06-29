@@ -305,21 +305,20 @@ Esta modalidade é projetada para situações que exigem um ciclo de feedback r�
 
 ## Estrutura de Diretórios
 
-* `.` (raiz do repositório Jules-Flow):
-    * `README.md`: Este arquivo.
+* `/jules-flow/`: Diretório raiz do sistema Jules-Flow.
+    * `/backlog/`: Contém tarefas pendentes (arquivos `.md`).
+    * `/in_progress/`: Contém a tarefa que está sendo executada no momento.
+    * `/done/`: Contém tarefas concluídas com sucesso.
+    * `/failed/`: Contém tarefas que falharam durante a execução.
+    * `/final-reports/`: Contém os relatórios finais consolidados de cada etapa de trabalho.
+    * `/docs/reference/`: Contém artefatos de pesquisa e documentação técnica consultada ou gerada por Jules (ex: documentação de APIs, resultados de tasks de `research` da Fase 1).
+    * `/templates/`: Contém modelos para novas tarefas (`task-template.md`) e para o arquivo de diretrizes do agente (`AGENTS.md`).
+    * `README.md`: Este arquivo (o README do próprio sistema Jules-Flow).
     * `instructions-for-jules.md`: Instruções operacionais para o agente Jules.
     * `task-index.md`: Índice e relatório de progresso de todas as tarefas.
     * `working-plan.md`: O plano de trabalho mestre gerado na fase de planejamento.
-    * `icone-jules-flow.webp`: Ícone do sistema.
-    * `LICENSE`: Arquivo de licença.
-    * `templates/`: Contém modelos para novas tarefas (`task-template.md`) e para o arquivo de diretrizes do agente (`AGENTS.md`).
-    * `backlog/`: Contém tarefas pendentes (arquivos `.md`).
-    * `in_progress/`: Contém a tarefa que está sendo executada no momento.
-    * `done/`: Contém tarefas concluídas com sucesso.
-    * `failed/`: Contém tarefas que falharam durante a execução.
-    * `final-reports/`: Contém os relatórios finais consolidados de cada etapa de trabalho.
-    * `docs/`:
-        * `reference/`: Contém artefatos de pesquisa e documentação técnica consultada ou gerada por Jules (ex: documentação de APIs, resultados de tasks de `research` da Fase 1).
+    * `icone-jules-flow.webp`: Ícone do sistema (se aplicável, dentro da estrutura jules-flow).
+    * `LICENSE`: Arquivo de licença do sistema Jules-Flow.
 
 ## Licença
 
