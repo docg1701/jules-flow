@@ -226,6 +226,61 @@ Olá, Jules. Identifiquei a necessidade de reavaliar e possivelmente alterar o `
 Por favor, inicie o "Processo Especial: Adaptação de Plano em Execução" conforme descrito em `jules-flow/instructions-for-jules.md`. Pause qualquer tarefa em progresso, crie a task `replan` com suas observações sobre o estado atual do plano (se houver) e aguarde a atualização do `working-plan.md` e minhas instruções para prosseguir.
 ```
 
+**Prompt 2.8: Iniciar Modo de Desenvolvimento Conjunto (Co-Dev)**
+
+Use este prompt para iniciar uma sessão de desenvolvimento colaborativo com Jules, onde você e o agente trabalham de forma síncrona no mesmo branch para desenvolver e depurar tarefas.
+
+```markdown
+Olá, Jules. Gostaria de iniciar o Modo de Desenvolvimento Conjunto (Co-Dev).
+
+Por favor, execute a **Fase 7** do arquivo `jules-flow/instructions-for-jules.md` para preparar o ambiente para o trabalho colaborativo.
+```
+
+### 3. Desenvolvimento Conjunto Humano-Jules (Modo Co-Dev)
+
+Esta modalidade é projetada para situações que exigem um ciclo de feedback rápido entre o desenvolvedor humano e Jules, especialmente útil para depuração complexa ou desenvolvimento iterativo fino de uma funcionalidade específica.
+
+**Fluxo de Trabalho no Modo Co-Dev:**
+
+1.  **Iniciação pelo Usuário**: O desenvolvedor humano invoca o Modo Co-Dev usando o "Prompt 2.8".
+2.  **Preparação por Jules**:
+    *   Jules analisa o estado atual do repositório e do sistema `jules-flow`.
+    *   Jules anuncia que está pronto para iniciar o Modo Co-Dev.
+    *   Jules informa o nome do branch em que está trabalhando (ex: `feature/task-123-xyz`).
+    *   Jules fornece ao usuário os comandos `git` necessários para que o usuário sincronize seu ambiente local com o de Jules:
+        ```bash
+        # Exemplo de comandos fornecidos por Jules ao usuário:
+        # 1. Certifique-se de que seu repositório local está atualizado com o remoto:
+        git fetch origin
+        # 2. Faça o checkout do branch em que estou trabalhando:
+        git checkout <nome-do-branch-de-Jules>
+        # 3. Garanta que seu branch local está sincronizado com o meu último commit:
+        git pull origin <nome-do-branch-de-Jules>
+        ```
+3.  **Seleção de Tarefa**:
+    *   Jules lista as tarefas que não estão marcadas como `done` no `jules-flow/task-index.md` (ou seja, tarefas com status `backlog`, `in_progress`, `failed`, `paused_replan`, `paused_environment`, `paused_research`).
+    *   O usuário escolhe uma tarefa específica para trabalhar em conjunto.
+4.  **Ciclo Iterativo de Desenvolvimento e Depuração**:
+    *   **Ação de Jules**:
+        1.  Jules analisa os arquivos relevantes para a tarefa selecionada.
+        2.  Jules realiza as modificações de código ou arquivos necessárias.
+        3.  Jules explica detalhadamente as modificações realizadas.
+        4.  Jules lista os arquivos que foram alterados.
+        5.  Jules realiza o commit das modificações no branch atual. (Nota: Jules deve ser capaz de fazer commits parciais sem finalizar todo o plano de trabalho. Se a ferramenta `submit` for a única forma de commitar, este passo pode precisar ser adaptado para que Jules prepare o commit e instrua o usuário a finalizá-lo.)
+    *   **Sincronização e Validação pelo Usuário**:
+        1.  Jules instrui o usuário a executar `git pull origin <nome-do-branch-de-Jules>` para obter as últimas modificações.
+        2.  Jules informa ao usuário quais comandos devem ser executados localmente (ex: rodar testes, compilar o projeto, iniciar um servidor de desenvolvimento, executar um script específico).
+        3.  Jules especifica qual tipo de feedback deve ser enviado de volta (ex: saída completa do console, logs de erro específicos, screenshots de comportamento inesperado, etc.).
+    *   **Análise e Correção por Jules**:
+        1.  O usuário executa os comandos e envia o feedback solicitado para Jules.
+        2.  Jules analisa o feedback.
+        3.  Se problemas forem identificados, Jules tenta identificar a causa raiz e propõe/implementa as correções.
+        4.  O ciclo retorna para "Ação de Jules", onde ele aplicará as correções e fará um novo commit.
+5.  **Conclusão da Tarefa e do Modo Co-Dev**:
+    *   Este ciclo iterativo continua até que a tarefa selecionada esteja funcionando conforme esperado e tanto o usuário quanto Jules concordem que ela está concluída.
+    *   Para finalizar o Modo Co-Dev, o usuário pode emitir um comando como "Jules, a tarefa está concluída. Podemos finalizar o Modo Co-Dev."
+    *   Jules então pode retornar ao seu fluxo de trabalho padrão (Fase 3 ou outra, conforme apropriado) ou aguardar novas instruções.
+
 ## Estrutura de Diretórios
 
 * `/jules-flow/`: Diretório raiz do sistema Jules-Flow.
