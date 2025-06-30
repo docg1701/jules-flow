@@ -158,14 +158,67 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
           4.  Anuncie a falha e o ID da tarefa que falhou, e pare todo o trabalho subsequente. Se estiver executando um lote de tarefas, a falha de uma tarefa interrompe o processamento do restante do lote.
   8.  **Registro de Conclusão da Tarefa**: Documente o resultado da tarefa. Todas as alterações de tarefas concluídas com sucesso serão incluídas no commit final do branch, criado ao submeter o plano de trabalho completo usando a ferramenta `submit`.
   
-#### Fase 4: Geração de Relatório e Finalização
+#### Fase 4: Geração de Relatório Final e Limpeza do Ciclo
 
-* **Objetivo**: Consolidar o trabalho e limpar o ambiente.
-* **Ação**:
-    1.  Verifique se os diretórios `jules-flow/backlog/`, `jules-flow/in_progress/` e `jules-flow/failed/` estão vazios.
-    2.  Compile um relatório final (`final-report-YYYYMMDDHHMMSS.md`) a partir das seções "Relatório de Execução" de todas as tarefas em `jules-flow/done/`.
-    3.  Salve o relatório em `jules-flow/final-reports/`.
-    4.  Limpe o conteúdo dos diretórios de estado (`jules-flow/backlog/`, `jules-flow/in_progress/`, `jules-flow/done/`, `jules-flow/failed/`), excluindo todos os arquivos de tarefa (`.md`) de dentro deles. Preserve os próprios diretórios e quaisquer arquivos `.gitkeep` que eles contenham. Limpe o conteúdo do arquivo `jules-flow/task-index.md`, preservando o arquivo em si e o cabeçalho da tabela para o próximo ciclo de trabalho.
+*   **Objetivo**: Consolidar os resultados do ciclo de trabalho atual em um relatório abrangente, arquivar os artefatos de execução e preparar o ambiente para um novo ciclo.
+*   **Ação**:
+
+    1.  **Verificação Pré-Execução**:
+        *   Execute `ls("jules-flow/backlog/")`, `ls("jules-flow/in_progress/")`, e `ls("jules-flow/failed/")`.
+        *   Confirme que todos esses diretórios estão vazios, contendo no máximo um arquivo `.gitkeep` cada.
+        *   Se algum desses diretórios contiver arquivos de tarefa (ex: `task-*.md`), anuncie um erro ao usuário indicando que a Fase 4 não pode prosseguir até que as tarefas pendentes ou falhas sejam resolvidas ou movidas apropriadamente. Exemplo de mensagem: "Erro: A Fase 4 não pode iniciar. Os diretórios `jules-flow/backlog/`, `jules-flow/in_progress/`, ou `jules-flow/failed/` contêm tarefas não finalizadas. Verifique o `task-index.md` e resolva as tarefas pendentes." Pare a execução desta fase se esta condição não for atendida.
+
+    2.  **Geração do Timestamp para o Relatório**:
+        *   Gere um timestamp no formato `YYYYMMDDHHMMSS`. (Nota para a plataforma de execução de Jules: este timestamp deve ser fornecido a Jules ou Jules deve ser instruído a usar uma ferramenta/método específico para obtê-lo de forma consistente. Se Jules não puder gerar diretamente, ele pode usar um placeholder como `TIMESTAMP_PENDENTE` e notificar o usuário).
+        *   *Instrução para Jules*: Se você não puder gerar o timestamp `YYYYMMDDHHMMSS` diretamente, use a string `[TIMESTAMP_PLACEHOLDER]` e informe o usuário na mensagem final da Fase 4 para substituí-lo.
+
+    3.  **Compilação do Relatório Final**:
+        *   Defina o nome do arquivo do relatório: `final-report-[timestamp].md` (substituindo `[timestamp]` pelo valor gerado no passo anterior).
+        *   Crie uma string para o conteúdo do relatório, começando com o título:
+            ```markdown
+            # Relatório Final de Execução - [timestamp]
+
+            Este relatório consolida os resultados de todas as tarefas concluídas neste ciclo de trabalho.
+            ```
+            (Substitua `[timestamp]` aqui também).
+        *   Liste os arquivos no diretório `jules-flow/done/` usando `ls("jules-flow/done/")`. Filtre para incluir apenas arquivos de tarefa (ex: terminados em `.md` e que não sejam `.gitkeep`).
+        *   Ordene os nomes dos arquivos de tarefa alfabeticamente (ex: `task-001.md`, `task-002.md`, `task-AAA.md`).
+        *   Para cada arquivo de tarefa (`task-XXX.md`) na lista ordenada:
+            a.  Leia o conteúdo completo do arquivo `jules-flow/done/task-XXX.md`.
+            b.  Extraia o ID da tarefa e o Título do cabeçalho YAML do arquivo. (Ex: `id: task-XXX`, `title: "Título da Tarefa"`).
+            c.  Localize a seção "Relatório de Execução" no conteúdo do arquivo. Esta seção é identificada pelo cabeçalho Markdown `## Relatório de Execução`.
+            d.  Extraia todo o conteúdo que se segue a este cabeçalho `## Relatório de Execução` até o final do arquivo ou até o próximo cabeçalho de mesmo nível (##) ou nível superior (#).
+            e.  Acrescente ao conteúdo do relatório final:
+                ```markdown
+
+                ---
+                ## Tarefa [ID da Tarefa]: [Título da Tarefa]
+
+                (Conteúdo extraído da seção "Relatório de Execução" da task-XXX.md)
+                ```
+                (Substitua `[ID da Tarefa]` e `[Título da Tarefa]` pelos valores extraídos).
+        *   Se não houver tarefas em `jules-flow/done/`, o relatório conterá apenas o cabeçalho inicial e uma nota como: "Nenhuma tarefa foi concluída neste ciclo."
+
+    4.  **Salvamento do Relatório Final**:
+        *   Use `create_file_with_block` para salvar o conteúdo compilado do relatório no arquivo `jules-flow/final-reports/final-report-[timestamp].md`.
+
+    5.  **Limpeza dos Diretórios de Estado**:
+        *   Para cada um dos seguintes diretórios: `jules-flow/backlog/`, `jules-flow/in_progress/`, `jules-flow/done/`, `jules-flow/failed/`:
+            a.  Use `ls()` no diretório específico (ex: `ls("jules-flow/done/")`).
+            b.  Para cada arquivo listado que termina com `.md` e **não é** `.gitkeep` (ou, mais especificamente, corresponde a `task-*.md` se for um padrão mais seguro), use `delete_file(caminho_completo_do_arquivo)`.
+
+    6.  **Limpeza do `jules-flow/task-index.md`**:
+        *   Defina o conteúdo que deve permanecer no `task-index.md`:
+            ```markdown
+            # Índice de Tarefas Jules-Flow
+
+            | ID da Tarefa | Título | Tipo | Status | Prioridade | Dependências | Atribuído |
+            |--------------|--------|------|--------|------------|--------------|-----------|
+            ```
+        *   Use `overwrite_file_with_block` para substituir o conteúdo de `jules-flow/task-index.md` por este conteúdo de cabeçalho.
+
+    7.  **Anúncio de Conclusão da Fase**:
+        *   Envie uma mensagem ao usuário informando que a Fase 4 foi concluída, o relatório final foi gerado (mencionando o nome do arquivo) e o ambiente foi limpo para o próximo ciclo. Se um placeholder de timestamp foi usado, instrua o usuário a atualizá-lo. Exemplo: "Fase 4 concluída. O relatório `final-report-[timestamp].md` foi gerado em `jules-flow/final-reports/`. Os diretórios de estado e o índice de tarefas foram limpos. O sistema está pronto para um novo ciclo." (Se aplicável: "Por favor, substitua `[TIMESTAMP_PLACEHOLDER]` no nome do arquivo do relatório e no título pelo timestamp atual `YYYYMMDDHHMMSS`.")
 
 #### Fase 5: Atualização da Documentação do Projeto
 
