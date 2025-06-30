@@ -176,7 +176,7 @@ Use os prompts a seguir para gerenciar o trabalho de Jules no branch de desenvol
 ```markdown
 Olá, Jules. Estamos iniciando o trabalho em um novo branch. Sua missão é preparar o ambiente e iniciar o ciclo de trabalho.
 
-Execute as **Fases 1 e 2** do arquivo `instructions-for-jules.md` sequencialmente para colocar o projeto em estado de pronto para a execução das tarefas.
+Execute as **Fases 1 e 2** do arquivo `jules-flow/instructions-for-jules.md` sequencialmente para colocar o projeto em estado de pronto para a execução das tarefas.
 ```
 
 **Prompt 2.2: Continuar Trabalho (Individual ou em Lote)**
@@ -187,14 +187,14 @@ Use este comando para instruir Jules a executar as tarefas pendentes. Ele possui
 ```markdown
 Olá, Jules. É hora de retomar seu trabalho em um novo branch.
 
-Execute a **Fase 3** do arquivo `instructions-for-jules.md` para processar a próxima tarefa disponível no backlog.
+Execute a **Fase 3** do arquivo `jules-flow/instructions-for-jules.md` para processar a próxima tarefa disponível no backlog.
 ```
 
 *Para executar um lote de tarefas (ex: 3 tarefas em sequência):*
 ```markdown
 Olá, Jules. É hora de retomar seu trabalho em um novo branch.
 
-Execute a **Fase 3** do arquivo `instructions-for-jules.md` **3 vezes em sequência**, processando um lote de tarefas do backlog sem pausas entre elas.
+Execute a **Fase 3** do arquivo `jules-flow/instructions-for-jules.md` **3 vezes em sequência**, processando um lote de tarefas do backlog sem pausas entre elas.
 ```
 Nota: Se qualquer tarefa em um lote falhar, Jules pausará toda a execução do lote após finalizar a tarefa que falhou (movendo-a para `failed/`) e aguardará novas instruções, conforme a Fase 3, Passo 7 do `instructions-for-jules.md`.
 
@@ -205,7 +205,7 @@ Use este prompt após todas as tarefas terem sido concluídas com sucesso.
 ```markdown
 Olá, Jules. O trabalho de desenvolvimento foi concluído.
 
-Execute a **Fase 4** do arquivo `instructions-for-jules.md` para gerar o relatório final e limpar o ambiente de trabalho.
+Execute a **Fase 4** do arquivo `jules-flow/instructions-for-jules.md` para gerar o relatório final e limpar o ambiente de trabalho.
 ```
 
 **Prompt 2.4: Atualizar a documentação**
@@ -215,7 +215,7 @@ Use este prompt para iniciar a fase de atualização da documentação do projet
 ```markdown
 Olá, Jules. Com base no trabalho concluído, sua missão agora é atualizar a documentação do projeto.
 
-Execute a **Fase 5** do arquivo `instructions-for-jules.md` para analisar os impactos na documentação e realizar as atualizações necessárias.
+Execute a **Fase 5** do arquivo `jules-flow/instructions-for-jules.md` para analisar os impactos na documentação e realizar as atualizações necessárias.
 ```
 
 **Prompt 2.5: Revisar o Trabalho do Branch**
@@ -225,7 +225,7 @@ Use este prompt para iniciar uma revisão de qualidade do código gerado.
 ```markdown
 Olá, Jules. O trabalho de desenvolvimento foi concluído.
 
-Execute a **Fase 6** do arquivo `instructions-for-jules.md` para realizar uma revisão de qualidade no código produzido e identificar possíveis melhorias.
+Execute a **Fase 6** do arquivo `jules-flow/instructions-for-jules.md` para realizar uma revisão de qualidade no código produzido e identificar possíveis melhorias.
 ```
 
 **Prompt 2.6: Analisar e Corrigir Tarefa com Falha**
@@ -235,15 +235,15 @@ Use este prompt quando uma tarefa falhar e o trabalho for bloqueado.
 ```markdown
 Olá, Jules. Identificamos que a tarefa `task-XXX` falhou.
 
-Siga o procedimento de tratamento de falhas descrito na **Fase 3 (passo 7)** do arquivo `instructions-for-jules.md` para analisar o problema. Em seguida, crie uma nova task de correção.
+Siga o procedimento de tratamento de falhas descrito na **Fase 3 (passo 7)** do arquivo `jules-flow/instructions-for-jules.md` para analisar o problema. Em seguida, crie uma nova task de correção.
 ```
 
 **Prompt 2.7 (Opcional): Iniciar Reavaliação do Plano de Trabalho**
 
-Use este prompt se você, Desenvolvedor, identificar a necessidade de alterar o `working-plan.md` antes que Jules o faça.
+Use este prompt se você, Desenvolvedor, identificar a necessidade de alterar o `jules-flow/working-plan.md` antes que Jules o faça.
 
 ```markdown
-Olá, Jules. Identifiquei a necessidade de reavaliar e possivelmente alterar o `working-plan.md` atual.
+Olá, Jules. Identifiquei a necessidade de reavaliar e possivelmente alterar o `jules-flow/working-plan.md` atual.
 
 Por favor, inicie o "Processo Especial: Adaptação de Plano em Execução" conforme descrito em `instructions-for-jules.md`. Pause qualquer tarefa em progresso, crie a task `replan` com suas observações sobre o estado atual do plano (se houver) e aguarde a atualização do `working-plan.md` e minhas instruções para prosseguir.
 ```
@@ -255,7 +255,7 @@ Use este prompt para iniciar uma sessão de desenvolvimento colaborativo com Jul
 ```markdown
 Olá, Jules. Gostaria de iniciar o Modo de Desenvolvimento Conjunto (Co-Dev).
 
-Por favor, execute a **Fase 7** do arquivo `instructions-for-jules.md` para preparar o ambiente para o trabalho colaborativo.
+Por favor, execute a **Fase 7** do arquivo `jules-flow/instructions-for-jules.md` para preparar o ambiente para o trabalho colaborativo.
 ```
 
 ### 3. Desenvolvimento Conjunto Humano-Jules (Modo Co-Dev)
