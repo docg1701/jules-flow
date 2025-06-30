@@ -158,98 +158,98 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
           4.  Anuncie a falha e o ID da tarefa que falhou, e pare todo o trabalho subsequente. Se estiver executando um lote de tarefas, a falha de uma tarefa interrompe o processamento do restante do lote.
   8.  **Registro de Conclusão da Tarefa**: Documente o resultado da tarefa. Todas as alterações de tarefas concluídas com sucesso serão incluídas no commit final do branch, criado ao submeter o plano de trabalho completo usando a ferramenta `submit`.
   
-#### Fase 4: Geração de Relatório Final e Limpeza do Ciclo
+#### Fase 4: Geração de Relatório Final e Limpeza do Ciclo (Revisado)
 
-*   **Objetivo**: Consolidar os resultados do ciclo de trabalho atual em um relatório abrangente, arquivar os artefatos de execução e preparar o ambiente para um novo ciclo.
+*   **Objetivo**: Consolidar os resultados do ciclo de trabalho atual em um relatório abrangente, arquivar os artefatos de execução e preparar o ambiente para um novo ciclo, com verificação do usuário antes da limpeza.
 *   **Ação**:
 
     1.  **Verificação Pré-Execução**:
         *   Execute `ls("jules-flow/backlog/")`, `ls("jules-flow/in_progress/")`, e `ls("jules-flow/failed/")`.
         *   Confirme que todos esses diretórios estão vazios, contendo no máximo um arquivo `.gitkeep` cada.
-        *   Se algum desses diretórios contiver arquivos de tarefa (ex: `task-*.md`), anuncie um erro ao usuário indicando que a Fase 4 não pode prosseguir até que as tarefas pendentes ou falhas sejam resolvidas ou movidas apropriadamente. Exemplo de mensagem: "Erro: A Fase 4 não pode iniciar. Os diretórios `jules-flow/backlog/`, `jules-flow/in_progress/`, ou `jules-flow/failed/` contêm tarefas não finalizadas. Verifique o `task-index.md` e resolva as tarefas pendentes." Pare a execução desta fase se esta condição não for atendida.
+        *   Se algum desses diretórios contiver arquivos de tarefa (ex: `task-*.md`), anuncie um erro ao usuário: "Erro: A Fase 4 não pode iniciar. Os diretórios `jules-flow/backlog/`, `jules-flow/in_progress/`, ou `jules-flow/failed/` contêm tarefas não finalizadas. Verifique o `task-index.md` e resolva as tarefas pendentes." Pare a execução desta fase se esta condição não for atendida.
 
     2.  **Geração do Timestamp para o Relatório**:
         *   *Instrução para Jules*: Gere um timestamp no formato `YYYYMMDDHHMMSS` utilizando o comando bash `date +"%Y%m%d%H%M%S"`. Execute este comando usando a ferramenta `run_in_bash_session` e capture a saída para usar como o timestamp.
-        *   Exemplo de como você deve obter o timestamp:
-            ```bash
-            date +"%Y%m%d%H%M%S"
-            ```
-        *   Este timestamp será usado no nome do arquivo do relatório e no seu título.
 
-    3.  **Compilação do Relatório Final**:
-        *   Defina o nome do arquivo do relatório: `final-report-[timestamp].md` (substituindo `[timestamp]` pelo valor gerado no passo anterior).
+    3.  **Identificar Tarefas Concluídas no Ciclo Atual (Fonte: `task-index.md`)**:
+        *   Leia o `task-index.md`.
+        *   Analise a tabela para coletar todos os `ID da Tarefa` que possuem o `Status` igual a `done`. Armazene esses IDs em uma lista chamada `done_tasks_in_index`.
+
+    4.  **Identificar Tarefas Já Reportadas (Fonte: `jules-flow/final-reports/`)**:
+        *   Inicialize uma estrutura de dados (como um conjunto ou *set*) para armazenar os `previously_reported_task_ids`, garantindo a unicidade.
+        *   Liste os arquivos no diretório `jules-flow/final-reports/` usando `ls("jules-flow/final-reports/")`. Filtre esta lista para processar apenas arquivos que correspondam ao padrão `final-report-*.md`.
+        *   Se nenhum arquivo `final-report-*.md` for encontrado, `previously_reported_task_ids` permanecerá vazio.
+        *   Para cada arquivo de relatório (`final-report-*.md`) encontrado:
+            a.  Leia o conteúdo completo do arquivo de relatório.
+            b.  Analise o conteúdo para extrair os IDs de todas as tarefas mencionadas nele (ex: procurando por `## Tarefa [ID]:`).
+            c.  Para cada ID extraído, adicione-o à sua coleção de `previously_reported_task_ids`.
+
+    5.  **Determinar IDs de Tarefas para o Novo Relatório**:
+        *   Crie uma lista `task_ids_for_new_report` contendo os IDs que estão na lista `done_tasks_in_index` E NÃO ESTÃO na coleção `previously_reported_task_ids`.
+        *   Ordene a lista `task_ids_for_new_report` alfabeticamente/numericamente para garantir uma ordem consistente no relatório.
+
+    6.  **Compilação Interativa do Relatório Final a partir de `jules-flow/done/`**:
+        *   Defina o nome do arquivo do relatório: `final-report-[timestamp].md` (substituindo `[timestamp]` pelo valor gerado).
         *   Crie uma string para o conteúdo do relatório, começando com o título:
             ```markdown
             # Relatório Final de Execução - [timestamp]
 
-            Este relatório consolida os resultados de todas as tarefas concluídas neste ciclo de trabalho que ainda não foram reportadas.
+            Este relatório consolida os resultados das tarefas concluídas neste ciclo de trabalho que ainda não foram reportadas.
             ```
             (Substitua `[timestamp]` aqui também).
-
-        *   **Identificar Tarefas Já Reportadas**:
-            a.  Crie uma lista vazia chamada `reported_task_ids`.
-            b.  Liste os arquivos no diretório `jules-flow/final-reports/` usando `ls("jules-flow/final-reports/")`.
-            c.  Para cada arquivo de relatório existente (ex: `final-report-*.md`):
-                i.  Leia o conteúdo do arquivo de relatório.
-                ii. Analise o conteúdo para extrair os IDs de todas as tarefas mencionadas nele. (Por exemplo, procurando por linhas que correspondam ao padrão `## Tarefa [ID da Tarefa]:`). Adicione cada ID encontrado à lista `reported_task_ids`. Certifique-se de adicionar cada ID apenas uma vez, mesmo que um ID apareça em múltiplos relatórios antigos (embora isso não deva acontecer com a lógica correta).
-
-        *   **Identificar Tarefas em `done/` para Novo Relatório**:
-            a.  Liste os arquivos no diretório `jules-flow/done/` usando `ls("jules-flow/done/")`. Filtre para incluir apenas arquivos de tarefa (ex: terminados em `.md` e que não sejam `.gitkeep`).
-            b.  Crie uma lista vazia chamada `tasks_to_report`.
-            c.  Para cada arquivo de tarefa (`task-XXX.md`) em `jules-flow/done/`:
-                i.  Extraia o ID da tarefa do nome do arquivo ou do seu conteúdo (ex: `task-XXX`).
-                ii. Se o ID da tarefa **não estiver** na lista `reported_task_ids`, adicione o nome do arquivo da tarefa (ex: `task-XXX.md`) à lista `tasks_to_report`.
-            d.  Ordene a lista `tasks_to_report` alfabeticamente (ex: `task-001.md`, `task-002.md`, `task-AAA.md`).
-
-        *   **Processar Tarefas para o Novo Relatório**:
-            a.  Se a lista `tasks_to_report` estiver vazia, adicione ao conteúdo do relatório uma nota: "Nenhuma tarefa nova foi concluída neste ciclo para inclusão no relatório."
-            b.  Caso contrário, para cada nome de arquivo de tarefa (`task-XXX.md`) na lista ordenada `tasks_to_report`:
-                i.  Leia o conteúdo completo do arquivo `jules-flow/done/task-XXX.md`.
-                ii. Extraia o ID da tarefa e o Título do cabeçalho YAML principal do arquivo (Ex: `id: task-XXX`, `title: "Título da Tarefa"`).
-                iii.Localize a seção "Relatório de Execução" no conteúdo do arquivo. Esta seção é identificada pelo cabeçalho Markdown `## Relatório de Execução`.
-                iv. Dentro do conteúdo que se segue a este cabeçalho `## Relatório de Execução`, identifique e extraia os valores dos seguintes campos YAML:
-                    1.  `outcome:` (ex: `success` ou `failure`)
-                    2.  `outcome_reason:` (o texto, se houver)
-                    3.  `execution_details: |` (o texto multilinha que se segue)
-                    *Nota para Jules: Você precisará analisar as linhas após `## Relatório de Execução` para encontrar esses campos. Ignore linhas de comentário (começando com `#`) ao extrair esses valores. Para `execution_details: |`, capture todo o bloco de texto indentado que segue esta linha.*
-                v.  Formate o conteúdo extraído e acrescente ao relatório final:
+        *   Crie uma lista vazia chamada `tasks_successfully_added_to_report_ids` para rastrear os IDs das tarefas efetivamente adicionadas.
+        *   Para cada `ID_da_task` na lista ordenada `task_ids_for_new_report`:
+            a.  Construa o caminho completo para o arquivo da tarefa: `jules-flow/done/task-[ID_da_task].md`.
+            b.  Verifique se este arquivo existe fisicamente (usando `ls` no arquivo específico ou verificando a lista de `ls("jules-flow/done/")`).
+            c.  Se o arquivo existir:
+                i.  Leia o conteúdo completo do arquivo `jules-flow/done/task-[ID_da_task].md`.
+                ii. Extraia o ID da tarefa (reconfirme do conteúdo se necessário) e o Título do cabeçalho YAML.
+                iii.Localize e extraia os detalhes da seção "Relatório de Execução" (`outcome`, `outcome_reason`, `execution_details`).
+                iv. Formate e acrescente essas informações ao conteúdo do relatório final, como no exemplo:
                     ```markdown
 
                     ---
                     ## Tarefa [ID da Tarefa]: [Título da Tarefa]
 
                     **Resultado:** [Valor de outcome]
-
                     **Motivo do Resultado:** [Valor de outcome_reason, se presente, caso contrário, "N/A"]
-
                     **Detalhes da Execução:**
                     ```
                     [Valor de execution_details]
                     ```
-                    (Substitua `[ID da Tarefa]`, `[Título da Tarefa]`, `[Valor de outcome]`, `[Valor de outcome_reason]`, e `[Valor de execution_details]` pelos valores extraídos/processados. Se `outcome_reason` estiver vazio ou ausente, pode-se omitir a linha "Motivo do Resultado:" ou usar "N/A").
+                v.  Adicione o `ID_da_task` à lista `tasks_successfully_added_to_report_ids`.
+            d.  Se o arquivo `jules-flow/done/task-[ID_da_task].md` NÃO existir:
+                i.  Jules DEVE anunciar ao usuário (via `message_user`): "Atenção: A task `[ID_da_task]`, identificada para relatório (status 'done' no índice e não reportada anteriormente), não foi encontrada em `jules-flow/done/task-[ID_da_task].md`. Esta task não será incluída no relatório atual. Por favor, verifique a integridade dos arquivos e do `task-index.md`." (Continue o loop para as próximas tasks).
+        *   Se a lista `tasks_successfully_added_to_report_ids` estiver vazia ao final do loop, adicione uma nota ao conteúdo do relatório: "Nenhuma task nova foi encontrada ou processada para este relatório."
 
-        *   Se não houver tarefas em `jules-flow/done/` inicialmente, ou se todas as tarefas em `jules-flow/done/` já tiverem sido reportadas, o relatório conterá apenas o cabeçalho inicial e a nota: "Nenhuma tarefa nova foi concluída neste ciclo para inclusão no relatório."
-
-    4.  **Salvamento do Relatório Final**:
+    7.  **Salvamento Provisório do Relatório Final**:
         *   Use `create_file_with_block` para salvar o conteúdo compilado do relatório no arquivo `jules-flow/final-reports/final-report-[timestamp].md`.
 
-    5.  **Limpeza dos Diretórios de Estado**:
-        *   Para cada um dos seguintes diretórios: `jules-flow/backlog/`, `jules-flow/in_progress/`, `jules-flow/done/`, `jules-flow/failed/`:
-            a.  Use `ls()` no diretório específico (ex: `ls("jules-flow/done/")`).
-            b.  Para cada arquivo listado que termina com `.md` e **não é** `.gitkeep` (ou, mais especificamente, corresponde a `task-*.md` se for um padrão mais seguro), use `delete_file(caminho_completo_do_arquivo)`.
+    8.  **Solicitação de Verificação e Confirmação do Usuário ANTES da Limpeza**:
+        *   Jules deve usar `request_user_input` para enviar a seguinte mensagem ao usuário (substituindo `[timestamp]` e a lista de IDs):
+            "O relatório `final-report-[timestamp].md` foi gerado em `jules-flow/final-reports/`.
+            Ele contém as seguintes tasks (IDs): `[liste os IDs de tasks_successfully_added_to_report_ids, separados por vírgula; se vazia, diga 'Nenhuma']`.
+            Por favor, verifique se o conteúdo do relatório está completo e correto.
+            **Após sua confirmação, prosseguirei com a limpeza dos diretórios de estado, incluindo a remoção dos arquivos de task de `jules-flow/done/`.**
+            Você confirma que o relatório está correto e podemos prosseguir com a limpeza? (Responda 'sim' ou 'não')"
+        *   Aguarde a resposta do usuário.
 
-    6.  **Limpeza do `jules-flow/task-index.md`**:
-        *   Defina o conteúdo que deve permanecer no `task-index.md`:
-            ```markdown
-            # Índice de Tarefas Jules-Flow
+    9.  **Limpeza Condicionada dos Diretórios de Estado e `task-index.md`**:
+        *   Se a resposta do usuário for "sim" (ou uma variação afirmativa clara como "s", "yes"):
+            a.  **Limpeza dos Diretórios de Estado**: Para cada um dos seguintes diretórios: `jules-flow/backlog/`, `jules-flow/in_progress/`, `jules-flow/done/`, `jules-flow/failed/`:
+                i.  Use `ls()` no diretório específico.
+                ii. Para cada arquivo listado que corresponda a `task-*.md`, use `delete_file(caminho_completo_do_arquivo)`.
+            b.  **Limpeza do `jules-flow/task-index.md`**: Defina o conteúdo que deve permanecer (apenas o cabeçalho da tabela) e use `overwrite_file_with_block` para substituí-lo.
+                ```markdown
+                # Índice de Tarefas Jules-Flow
 
-            | ID da Tarefa | Título | Tipo | Status | Prioridade | Dependências | Atribuído |
-            |--------------|--------|------|--------|------------|--------------|-----------|
-            ```
-        *   Use `overwrite_file_with_block` para substituir o conteúdo de `jules-flow/task-index.md` por este conteúdo de cabeçalho.
-
-    7.  **Anúncio de Conclusão da Fase**:
-        *   Envie uma mensagem ao usuário informando que a Fase 4 foi concluída, o relatório final foi gerado (mencionando o nome do arquivo) e o ambiente foi limpo para o próximo ciclo. Se um placeholder de timestamp foi usado, instrua o usuário a atualizá-lo. Exemplo: "Fase 4 concluída. O relatório `final-report-[timestamp].md` foi gerado em `jules-flow/final-reports/`. Os diretórios de estado e o índice de tarefas foram limpos. O sistema está pronto para um novo ciclo." (Se aplicável: "Por favor, substitua `[TIMESTAMP_PLACEHOLDER]` no nome do arquivo do relatório e no título pelo timestamp atual `YYYYMMDDHHMMSS`.")
+                | ID da Tarefa | Título | Tipo | Status | Prioridade | Dependências | Atribuído |
+                |--------------|--------|------|--------|------------|--------------|-----------|
+                ```
+            c.  Anuncie ao usuário (via `message_user`): "Limpeza concluída. Os diretórios de estado e o índice de tarefas foram reiniciados. O sistema está pronto para um novo ciclo."
+        *   Se a resposta do usuário for "não" (ou uma variação negativa clara como "n", "no"):
+            a.  Anuncie ao usuário (via `message_user`): "Entendido. A limpeza não será realizada. O relatório `final-report-[timestamp].md` permanece, e os arquivos em `jules-flow/done/` (e outros diretórios de estado) foram preservados. Por favor, indique os próximos passos ou correções necessárias."
+            b.  Jules deve aguardar novas instruções do usuário.
 
 #### Fase 5: Atualização da Documentação do Projeto
 
