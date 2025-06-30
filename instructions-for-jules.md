@@ -185,18 +185,28 @@ Este documento detalha o fluxo de trabalho completo que você, Jules, deve segui
         *   Ordene os nomes dos arquivos de tarefa alfabeticamente (ex: `task-001.md`, `task-002.md`, `task-AAA.md`).
         *   Para cada arquivo de tarefa (`task-XXX.md`) na lista ordenada:
             a.  Leia o conteúdo completo do arquivo `jules-flow/done/task-XXX.md`.
-            b.  Extraia o ID da tarefa e o Título do cabeçalho YAML do arquivo. (Ex: `id: task-XXX`, `title: "Título da Tarefa"`).
+            b.  Extraia o ID da tarefa e o Título do cabeçalho YAML principal do arquivo (Ex: `id: task-XXX`, `title: "Título da Tarefa"`).
             c.  Localize a seção "Relatório de Execução" no conteúdo do arquivo. Esta seção é identificada pelo cabeçalho Markdown `## Relatório de Execução`.
-            d.  Extraia todo o conteúdo que se segue a este cabeçalho `## Relatório de Execução` até o final do arquivo ou até o próximo cabeçalho de mesmo nível (##) ou nível superior (#).
-            e.  Acrescente ao conteúdo do relatório final:
+            d.  Dentro do conteúdo que se segue a este cabeçalho `## Relatório de Execução`, identifique e extraia os valores dos seguintes campos YAML:
+                i.  `outcome:` (ex: `success` ou `failure`)
+                ii. `outcome_reason:` (o texto, se houver)
+                iii. `execution_details: |` (o texto multilinha que se segue)
+                *Nota para Jules: Você precisará analisar as linhas após `## Relatório de Execução` para encontrar esses campos. Ignore linhas de comentário (começando com `#`) ao extrair esses valores. Para `execution_details: |`, capture todo o bloco de texto indentado que segue esta linha.*
+            e.  Formate o conteúdo extraído e acrescente ao relatório final:
                 ```markdown
 
                 ---
                 ## Tarefa [ID da Tarefa]: [Título da Tarefa]
 
-                (Conteúdo extraído da seção "Relatório de Execução" da task-XXX.md)
+                **Resultado:** [Valor de outcome]
+
+                **Motivo do Resultado:** [Valor de outcome_reason, se presente, caso contrário, "N/A"]
+
+                **Detalhes da Execução:**
                 ```
-                (Substitua `[ID da Tarefa]` e `[Título da Tarefa]` pelos valores extraídos).
+                [Valor de execution_details]
+                ```
+                (Substitua `[ID da Tarefa]`, `[Título da Tarefa]`, `[Valor de outcome]`, `[Valor de outcome_reason]`, e `[Valor de execution_details]` pelos valores extraídos/processados. Se `outcome_reason` estiver vazio ou ausente, pode-se omitir a linha "Motivo do Resultado:" ou usar "N/A").
         *   Se não houver tarefas em `jules-flow/done/`, o relatório conterá apenas o cabeçalho inicial e uma nota como: "Nenhuma tarefa foi concluída neste ciclo."
 
     4.  **Salvamento do Relatório Final**:
